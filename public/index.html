@@ -9,6 +9,10 @@
       name="description"
       content="Web site created using create-react-app"
     />
+    <link
+      rel="icon"
+      href="https://scontent-ssn1-1.cdninstagram.com/v/t51.2885-19/s150x150/129140919_392332205530493_8635467364715437525_n.jpg?_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_ohc=IZG49GM93BEAX9XZjEe&tp=1&oh=031ea677d07ad0077b2d456fcf24316b&oe=5FFB33E3"
+    />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <!--
       manifest.json provides metadata used when your web app is installed on a
@@ -24,7 +28,66 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>React App</title>
+    <title>제로웨이스트립</title>
+    <style>
+      .overlay_info {
+        border-radius: 6px;
+        margin-bottom: 12px;
+        float: left;
+        position: relative;
+        border: 1px solid #ccc;
+        border-bottom: 2px solid #ddd;
+        background-color: #fff;
+      }
+      .overlay_info:nth-of-type(n) {
+        border: 0;
+        box-shadow: 0px 1px 2px #888;
+      }
+      .overlay_info a {
+        display: block;
+        background: #d95050;
+        background: #d95050
+          url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png)
+          no-repeat right 14px center;
+        text-decoration: none;
+        color: #fff;
+        padding: 12px 36px 12px 14px;
+        font-size: 14px;
+        border-radius: 6px 6px 0 0;
+      }
+
+      .overlay_info .desc {
+        padding: 15px;
+        position: relative;
+        min-width: 190px;
+        height: 80px;
+      }
+      .overlay_info img {
+        vertical-align: top;
+        width: 50px;
+        height: 50px;
+      }
+      .overlay_info .address {
+        font-size: 12px;
+        color: #333;
+        position: absolute;
+        left: 80px;
+        right: 14px;
+        top: 15px;
+        white-space: normal;
+      }
+      .overlay_info:after {
+        content: "";
+        position: absolute;
+        margin-left: -11px;
+        left: 50%;
+        bottom: -12px;
+        width: 22px;
+        height: 12px;
+        background: url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png)
+          no-repeat 0 bottom;
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>
