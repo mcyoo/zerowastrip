@@ -24,10 +24,9 @@ class App extends Component {
         // HTML 문자열 또는 Dom Element 입니다
         var content = '<div class="overlay_info">';
         content +=
-          '    <a href="https://place.map.kakao.com/322286925" target="_blank"><strong><i class="fas fa-store"></i>지구별가게</strong></a>';
+          '    <a href="https://place.map.kakao.com/m/322286925" target="_blank"><strong>지구별가게</strong></a>';
         content += '    <div class="desc">';
-        content +=
-          '        <img src="https://img1.kakaocdn.net/relay/local/R736x736/?fname=http%3A%2F%2Ft1.kakaocdn.net%2Ffiy_reboot%2Fplace%2F096E30E419614C0AA069E4A6F74CE3BC" alt="">';
+        content += '        <img src="jigubul.jpeg" alt="">';
         content +=
           '        <span class="address">제주특별자치도 제주시 월랑북2길 16 1층</span>';
         content += "</div>";
@@ -67,11 +66,18 @@ class App extends Component {
         });
 
         // 마커에 클릭이벤트를 등록합니다
+        var click_bool = true;
         kakao.maps.event.addListener(marker, "click", function () {
           // 마커 위에 인포윈도우를 표시합니다
           //infowindow.open(map, marker);
           // 커스텀 오버레이를 지도에 표시합니다
-          mapCustomOverlay.setMap(map);
+          if (click_bool) {
+            mapCustomOverlay.setMap(map);
+            click_bool = false;
+          } else {
+            mapCustomOverlay.setMap(null); // 지도에서 제거한다.
+            click_bool = true;
+          }
         });
       });
     };
