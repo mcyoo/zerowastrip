@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/zerowastrip/static/css/main.ed60d452.chunk.css",
-    "main.js": "/zerowastrip/static/js/main.b4e53604.chunk.js",
-    "main.js.map": "/zerowastrip/static/js/main.b4e53604.chunk.js.map",
+    "main.js": "/zerowastrip/static/js/main.38a6246b.chunk.js",
+    "main.js.map": "/zerowastrip/static/js/main.38a6246b.chunk.js.map",
     "runtime-main.js": "/zerowastrip/static/js/runtime-main.b80e7ee6.js",
     "runtime-main.js.map": "/zerowastrip/static/js/runtime-main.b80e7ee6.js.map",
     "static/js/2.cb4e589d.chunk.js": "/zerowastrip/static/js/2.cb4e589d.chunk.js",
@@ -15,6 +15,6 @@
     "static/js/runtime-main.b80e7ee6.js",
     "static/js/2.cb4e589d.chunk.js",
     "static/css/main.ed60d452.chunk.css",
-    "static/js/main.b4e53604.chunk.js"
+    "static/js/main.38a6246b.chunk.js"
   ]
 }
