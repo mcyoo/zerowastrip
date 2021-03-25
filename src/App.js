@@ -83,7 +83,17 @@ class App extends Component {
     };
   }
   render() {
-    return <div id="Mymap" className="w-screen h-screen"></div>; // 이부분이 지도를 띄우게 될 부분.
+    return (
+      <div className="flex justify-center md:justify-start">
+        <i className="fas fa-search absolute z-50 mt-8 ml-97 md:ml-98 md:mt-14"></i>
+        <input
+          className="w-10/12 mt-5 border px-5 font-medium text-gray-900 placeholder-gray-400 py-2 md:py-3 rounded-md shadow-md hover:shadow-md focus:outline-none z-40 fixed md:ml-10 md:mt-10 md:w-1/3"
+          name="cafe"
+          placeholder="환경카페 검색"
+        ></input>
+        <div id="Mymap" className="w-screen h-screen"></div>
+      </div>
+    ); // 이부분이 지도를 띄우게 될 부분.
   }
 }
 
