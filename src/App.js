@@ -11,6 +11,9 @@ import smile_icon from "./assets/img/smile_icon.png";
 
 /*global kakao*/
 
+const map_level = 3;
+const panTo_latlngX = 0.0025;
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -25,6 +28,28 @@ class App extends Component {
 
   openBottomSheet(open) {
     this.setState({ open });
+    var panTo_latlngX_default = 0;
+    if (open === true) {
+      panTo_latlngX_default = panTo_latlngX;
+    }
+    const script = document.createElement("script");
+    script.async = true;
+    script.src =
+      "//dapi.kakao.com/v2/maps/sdk.js?appkey=9fcfc5ba629ae84b1930d4ba4e458ccb&libraries=services,clusterer&autoload=false";
+    document.head.appendChild(script);
+
+    const map = this.state.map;
+    script.onload = () => {
+      kakao.maps.load(() => {
+        var moveLatLon = new kakao.maps.LatLng(
+          this.state.cafe_list[this.state.cafe_num].latlngX -
+            panTo_latlngX_default,
+          this.state.cafe_list[this.state.cafe_num].latlngY
+        );
+        map.setLevel(map_level);
+        map.panTo(moveLatLon);
+      });
+    };
   }
 
   toggleBottomSheet() {
@@ -73,7 +98,7 @@ class App extends Component {
           level: 9,
         };
         const map = new window.kakao.maps.Map(container, options);
-
+        this.setState({ map });
         // 마커를 표시할 위치와 title 객체 배열입니다
         var positions = this.state.cafe_list;
 
@@ -107,8 +132,8 @@ class App extends Component {
           // 인포윈도우를 표시하는 클로저를 만드는 함수입니다
           function makeOverListener(map, cafe_data, react_function, num) {
             return function () {
-              map.setLevel(4);
-              panTo(cafe_data.latlngX - 0.004, cafe_data.latlngY);
+              map.setLevel(map_level);
+              panTo(cafe_data.latlngX - panTo_latlngX, cafe_data.latlngY);
               react_function.setState({ open: true, cafe_num: num });
               //this.state.open = true;
               //console.log(this.state.open);
@@ -121,18 +146,22 @@ class App extends Component {
   render() {
     return (
       <div className="flex justify-center md:justify-start">
-        <input
-          className="w-10/12 mt-5 border px-5 font-medium text-gray-900 placeholder-gray-400 py-2 md:py-3 rounded-md shadow-md hover:shadow-md focus:outline-none z-40 fixed md:ml-10 md:mt-10 md:w-1/3"
-          name="cafe"
-          placeholder="환경카페 검색"
-        ></input>
-        <FontAwesomeIcon
-          icon={faSearch}
-          className="fixed z-50 mt-8 ml-98 md:mt-14"
-        />
+        {this.state.open ? null : (
+          <>
+            <input
+              className="w-10/12 mt-5 border px-5 font-medium text-gray-900 placeholder-gray-400 py-2 md:py-3 rounded-md shadow-md hover:shadow-md focus:outline-none z-40 fixed md:ml-10 md:mt-10 md:w-1/3"
+              name="cafe"
+              placeholder="환경카페 검색"
+            />
+            <FontAwesomeIcon
+              icon={faSearch}
+              className="fixed z-50 mt-8 ml-98 md:mt-14"
+            />
+          </>
+        )}
         <div id="Mymap" className="w-screen h-screen z-0"></div>
         <SwipeableBottomSheet
-          overflowHeight={46}
+          overflowHeight={48}
           shadowTip={false}
           topShadow={false}
           open={this.state.open}
