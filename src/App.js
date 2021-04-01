@@ -4,6 +4,8 @@ import {
   faSearch,
   faAngleUp,
   faAngleDown,
+  faAngleLeft,
+  faAlignJustify,
 } from "@fortawesome/free-solid-svg-icons";
 import SwipeableBottomSheet from "react-swipeable-bottom-sheet";
 import "./assets/main.css";
@@ -20,14 +22,15 @@ class App extends Component {
 
     this.state = {
       open: false,
+      open_search: false,
       cafe_list: [],
       cafe_num: 0,
       map: null,
     };
   }
 
-  openBottomSheet(open) {
-    this.setState({ open });
+  openBottomSheet(open, num = this.state.cafe_num) {
+    this.setState({ open, open_search: false });
     var panTo_latlngX_default = 0;
     if (open === true) {
       panTo_latlngX_default = panTo_latlngX;
@@ -42,9 +45,8 @@ class App extends Component {
     script.onload = () => {
       kakao.maps.load(() => {
         var moveLatLon = new kakao.maps.LatLng(
-          this.state.cafe_list[this.state.cafe_num].latlngX -
-            panTo_latlngX_default,
-          this.state.cafe_list[this.state.cafe_num].latlngY
+          this.state.cafe_list[num].latlngX - panTo_latlngX_default,
+          this.state.cafe_list[num].latlngY
         );
         map.setLevel(map_level);
         map.panTo(moveLatLon);
@@ -54,6 +56,16 @@ class App extends Component {
 
   toggleBottomSheet() {
     this.openBottomSheet(!this.state.open);
+  }
+
+  closeInputSheet() {
+    this.setState({ open_search: false, open: false });
+  }
+  openInputSheet() {
+    this.setState({ open_search: true, open: false });
+  }
+  clickCafeSearchSheet(num) {
+    this.openBottomSheet(!this.state.open, num);
   }
 
   getJson = () => {
@@ -144,49 +156,127 @@ class App extends Component {
     };
   }
   render() {
+    const { open, open_search, cafe_list, cafe_num, map } = this.state;
     return (
-      <div className="flex justify-center md:justify-start">
-        {this.state.open ? null : (
-          <>
-            <input
-              className="w-10/12 mt-5 border px-5 font-medium text-gray-900 placeholder-gray-400 py-2 md:py-3 rounded-md shadow-md hover:shadow-md focus:outline-none z-40 fixed md:ml-10 md:mt-10 md:w-1/3"
-              name="cafe"
-              placeholder="환경카페 검색"
-            />
-            <FontAwesomeIcon
-              icon={faSearch}
-              className="fixed z-50 mt-8 ml-98 md:mt-14"
-            />
-          </>
-        )}
+      <div className="flex">
         <div id="Mymap" className="w-screen h-screen z-0"></div>
-        <SwipeableBottomSheet
-          overflowHeight={48}
-          shadowTip={false}
-          topShadow={false}
-          open={this.state.open}
-          onChange={this.openBottomSheet.bind(this)}
-        >
-          <div className="h-99 z-50 flex justify-center">
-            {this.state.open ? (
-              <FontAwesomeIcon
-                icon={faAngleDown}
-                className="mt-1 text-2xl opacity-50"
-                onClick={this.toggleBottomSheet.bind(this)}
-              />
+        {open ? null : (
+          <div className="flex justify-center md:justify-start fixed container z-30">
+            <input
+              className="w-10/12 mt-5 border px-5 pl-10 font-medium text-gray-900 placeholder-gray-400 py-2 md:py-3 rounded-md shadow-md hover:shadow-md focus:outline-none md:ml-10 md:mt-10 md:w-1/3"
+              name="cafe"
+              placeholder="환경카페 찾기"
+              onClick={this.openInputSheet.bind(this)}
+            />
+            <div className="fixed flex z-30 mt-8 md:mt-14 ml-97 md:ml-98">
+              <FontAwesomeIcon icon={faSearch} />
+            </div>
+            {open_search ? (
+              <div className="fixed flex z-30 justify-start mt-8 mr-97 md:ml-14 md:mt-14 text-xl">
+                <FontAwesomeIcon
+                  icon={faAngleLeft}
+                  onClick={this.closeInputSheet.bind(this)}
+                />
+              </div>
             ) : (
-              <FontAwesomeIcon
-                icon={faAngleUp}
-                className="mt-1 text-2xl opacity-50"
-                onClick={this.toggleBottomSheet.bind(this)}
-              />
+              <div className="fixed flex z-30 mt-8 md:mt-14 md:ml-14 mr-97">
+                <FontAwesomeIcon icon={faAlignJustify} />
+              </div>
             )}
           </div>
-          <div></div>
-        </SwipeableBottomSheet>
+        )}
+        {open_search ? (
+          <>
+            <div className="w-screen h-screen z-20 fixed bg-white">
+              <div class="bg-white shadow overflow-hidden sm:rounded-md mt-24">
+                <ul class="divide-y divide-gray-200">
+                  {cafe_list.map((cafe, index) => (
+                    <li>
+                      <a
+                        class="block hover:bg-gray-50"
+                        onClick={() => this.clickCafeSearchSheet(index)}
+                      >
+                        <div class="px-4 py-4 sm:px-6">
+                          <div class="flex items-center justify-between">
+                            <p class="text-sm font-thin text-gray-700 truncate">
+                              {cafe.address}
+                            </p>
+                            <div class="ml-2 flex-shrink-0 flex">
+                              <p class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                영업중
+                              </p>
+                            </div>
+                          </div>
+                          <div class="mt-2 sm:flex sm:justify-between">
+                            <div class="sm:flex">
+                              <p class="flex items-center text-lg font-bold text-gray-500">
+                                {cafe.title}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
+            <SwipeableBottomSheet
+              overflowHeight={48}
+              shadowTip={false}
+              topShadow={false}
+              open={open}
+              onChange={this.openBottomSheet.bind(this)}
+            >
+              <div className="h-99 z-30 flex justify-center">
+                {open ? (
+                  <FontAwesomeIcon
+                    icon={faAngleDown}
+                    className="mt-1 text-2xl opacity-50"
+                    onClick={this.toggleBottomSheet.bind(this)}
+                  />
+                ) : (
+                  <FontAwesomeIcon
+                    icon={faAngleUp}
+                    className="mt-1 text-2xl opacity-50"
+                    onClick={this.toggleBottomSheet.bind(this)}
+                  />
+                )}
+              </div>
+              <div>asdffsd</div>
+            </SwipeableBottomSheet>
+          </>
+        )}
       </div>
-    ); // 이부분이 지도를 띄우게 될 부분.
+    );
   }
 }
 
 export default App;
+
+/*
+ <li>
+                    <a class="block hover:bg-gray-50">
+                      <div class="px-4 py-4 sm:px-6">
+                        <div class="flex items-center justify-between">
+                          <p class="text-sm font-thin text-gray-700 truncate"></p>
+                          <div class="ml-2 flex-shrink-0 flex">
+                            <p class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                              마감
+                            </p>
+                          </div>
+                        </div>
+                        <div class="mt-2 sm:flex sm:justify-between">
+                          <div class="sm:flex">
+                            <p class="flex items-center text-lg font-light text-gray-500">
+                              카페스물다섯
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </a>
+                  </li>
+*/
