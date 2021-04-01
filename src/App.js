@@ -10,6 +10,7 @@ import {
 import SwipeableBottomSheet from "react-swipeable-bottom-sheet";
 import "./assets/main.css";
 import smile_icon from "./assets/img/smile_icon.png";
+import Slider from "react-slick";
 
 /*global kakao*/
 
@@ -30,7 +31,7 @@ class App extends Component {
   }
 
   openBottomSheet(open, num = this.state.cafe_num) {
-    this.setState({ open, open_search: false });
+    this.setState({ open, open_search: false, cafe_num: num });
     var panTo_latlngX_default = 0;
     if (open === true) {
       panTo_latlngX_default = panTo_latlngX;
@@ -65,7 +66,7 @@ class App extends Component {
     this.setState({ open_search: true, open: false });
   }
   clickCafeSearchSheet(num) {
-    this.openBottomSheet(!this.state.open, num);
+    this.openBottomSheet(true, num);
   }
 
   getJson = () => {
@@ -147,8 +148,7 @@ class App extends Component {
               map.setLevel(map_level);
               panTo(cafe_data.latlngX - panTo_latlngX, cafe_data.latlngY);
               react_function.setState({ open: true, cafe_num: num });
-              //this.state.open = true;
-              //console.log(this.state.open);
+              react_function.slider.slickGoTo(num);
             };
           }
         }
@@ -157,33 +157,54 @@ class App extends Component {
   }
   render() {
     const { open, open_search, cafe_list, cafe_num, map } = this.state;
+    const settings = {
+      dots: true,
+      infinite: true,
+      speed: 500,
+      slidesToShow: 1,
+      slidesToScroll: 1,
+      initialSlide: cafe_num,
+      lazyLoad: true,
+      afterChange: (index) => {
+        this.clickCafeSearchSheet(index);
+        console.log(cafe_num);
+      },
+    };
     return (
-      <div className="flex">
+      <div className="flex z-0">
         <div id="Mymap" className="w-screen h-screen z-0"></div>
         {open ? null : (
-          <div className="flex justify-center md:justify-start fixed container z-30">
-            <input
-              className="w-10/12 mt-5 border px-5 pl-10 font-medium text-gray-900 placeholder-gray-400 py-2 md:py-3 rounded-md shadow-md hover:shadow-md focus:outline-none md:ml-10 md:mt-10 md:w-1/3"
-              name="cafe"
-              placeholder="환경카페 찾기"
-              onClick={this.openInputSheet.bind(this)}
-            />
-            <div className="fixed flex z-30 mt-8 md:mt-14 ml-97 md:ml-98">
-              <FontAwesomeIcon icon={faSearch} />
+          <>
+            <div className="flex justify-center md:justify-start fixed container z-30">
+              <input
+                className="w-10/12 border mt-5 pl-12 font-medium text-gray-900 placeholder-gray-400 py-3 md:py-3 rounded-md focus:outline-none md:ml-10 md:mt-10 md:w-1/3"
+                name="cafe"
+                placeholder="환경카페 찾기"
+                onClick={this.openInputSheet.bind(this)}
+              />
+            </div>
+            <div className="flex justify-end md:justify-start fixed container z-30">
+              <div className="fixed flex z-30 mt-9 md:mt-14 pr-14 md:ml-98 text-lg">
+                <FontAwesomeIcon icon={faSearch} />
+              </div>
             </div>
             {open_search ? (
-              <div className="fixed flex z-30 justify-start mt-8 mr-97 md:ml-14 md:mt-14 text-xl">
-                <FontAwesomeIcon
-                  icon={faAngleLeft}
+              <div className="flex justify-start fixed container z-30">
+                <div
+                  className="fixed flex z-30 mt-8 ml-12 text-2xl w-12 h-12"
                   onClick={this.closeInputSheet.bind(this)}
-                />
+                >
+                  <FontAwesomeIcon icon={faAngleLeft} />
+                </div>
               </div>
             ) : (
-              <div className="fixed flex z-30 mt-8 md:mt-14 md:ml-14 mr-97">
-                <FontAwesomeIcon icon={faAlignJustify} />
+              <div className="flex justify-start fixed container z-30">
+                <div className="fixed flex z-30 mt-9 md:mt-14 ml-12 text-lg">
+                  <FontAwesomeIcon icon={faAlignJustify} />
+                </div>
               </div>
             )}
-          </div>
+          </>
         )}
         {open_search ? (
           <>
@@ -231,7 +252,7 @@ class App extends Component {
               open={open}
               onChange={this.openBottomSheet.bind(this)}
             >
-              <div className="h-99 z-30 flex justify-center">
+              <div className="h-99 z-30 text-center">
                 {open ? (
                   <FontAwesomeIcon
                     icon={faAngleDown}
@@ -245,8 +266,17 @@ class App extends Component {
                     onClick={this.toggleBottomSheet.bind(this)}
                   />
                 )}
+                <div className="mt-6">
+                  <Slider
+                    ref={(slider) => (this.slider = slider)}
+                    {...settings}
+                  >
+                    {cafe_list.map((cafe, index) => (
+                      <div className="w-screen h-96">{cafe.title}</div>
+                    ))}
+                  </Slider>
+                </div>
               </div>
-              <div>asdffsd</div>
             </SwipeableBottomSheet>
           </>
         )}

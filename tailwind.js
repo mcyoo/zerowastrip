@@ -61,6 +61,8 @@ module.exports = {
       60: "15rem",
       64: "16rem",
       72: "18rem",
+      73: "18.5rem",
+      74: "19rem",
       80: "20rem",
       96: "24rem",
       97: "70%", //search icon
