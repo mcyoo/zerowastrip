@@ -9,7 +9,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import SwipeableBottomSheet from "react-swipeable-bottom-sheet";
 import "./assets/main.css";
-import smile_icon from "./assets/img/smile_icon.png";
+import smile_icon from "./assets/img/green_cafe.png";
 import Slider from "react-slick";
 
 /*global kakao*/
@@ -120,7 +120,7 @@ class App extends Component {
 
         for (var i = 0; i < positions.length; i++) {
           // 마커 이미지의 이미지 크기 입니다
-          var imageSize = new kakao.maps.Size(35, 35);
+          var imageSize = new kakao.maps.Size(45, 45);
 
           // 마커 이미지를 생성합니다
           var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
@@ -191,7 +191,7 @@ class App extends Component {
             {open_search ? (
               <div className="flex justify-start fixed container z-30">
                 <div
-                  className="fixed flex z-30 mt-8 ml-12 text-2xl w-12 h-12"
+                  className="fixed flex z-30 mt-8 md:mt-14 ml-12 text-2xl w-12 h-12"
                   onClick={this.closeInputSheet.bind(this)}
                 >
                   <FontAwesomeIcon icon={faAngleLeft} />
@@ -266,13 +266,46 @@ class App extends Component {
                     onClick={this.toggleBottomSheet.bind(this)}
                   />
                 )}
-                <div className="mt-6">
+                <div className="mt-6 pb-16">
                   <Slider
                     ref={(slider) => (this.slider = slider)}
                     {...settings}
                   >
                     {cafe_list.map((cafe, index) => (
-                      <div className="w-screen h-96">{cafe.title}</div>
+                      <div className="w-screen h-96">
+                        <div class="w-full md:max-w-xs rounded overflow-hidden my-2">
+                          <img
+                            class="w-full"
+                            src="https://tailwindcss.com/img/card-top.jpg"
+                            alt="Sunset in the mountains"
+                          />
+                          <div class="px-6 py-4">
+                            <div class="font-bold text-xl mb-2">
+                              {cafe.title}
+                            </div>
+                            <p class="text-grey-darker text-base">
+                              <div>{cafe.name}</div>
+                              <div>{cafe.instagram}</div>
+                              <div>{cafe.address}</div>
+                              <div>{cafe.phone_number}</div>
+                              <div>{cafe.open_time}</div>
+                              <div>{cafe.meeting_time}</div>
+                              <div>{cafe.content}</div>
+                            </p>
+                          </div>
+                          <div class="px-6 py-4">
+                            <span class="inline-block bg-grey-lighter rounded-full px-3 py-1 text-sm font-semibold text-grey-darker mr-2">
+                              #photography
+                            </span>
+                            <span class="inline-block bg-grey-lighter rounded-full px-3 py-1 text-sm font-semibold text-grey-darker mr-2">
+                              #travel
+                            </span>
+                            <span class="inline-block bg-grey-lighter rounded-full px-3 py-1 text-sm font-semibold text-grey-darker">
+                              #winter
+                            </span>
+                          </div>
+                        </div>
+                      </div>
                     ))}
                   </Slider>
                 </div>
