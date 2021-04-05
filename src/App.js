@@ -272,7 +272,7 @@ class App extends Component {
                     {...settings}
                   >
                     {cafe_list.map((cafe, index) => (
-                      <div className="w-full">
+                      <div className="w-screen my-10">
                         <div>{cafe.title}</div>
                         <div>{cafe.name}</div>
                         <div>{cafe.instagram}</div>
