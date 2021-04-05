@@ -266,13 +266,13 @@ class App extends Component {
                     onClick={this.toggleBottomSheet.bind(this)}
                   />
                 )}
-                <div className="mt-6 pb-16">
+                <div className="w-screen mt-6 pb-16">
                   <Slider
                     ref={(slider) => (this.slider = slider)}
                     {...settings}
                   >
                     {cafe_list.map((cafe, index) => (
-                      <div className="w-screen">
+                      <div className="w-full">
                         <div>{cafe.title}</div>
                         <div>{cafe.name}</div>
                         <div>{cafe.instagram}</div>
