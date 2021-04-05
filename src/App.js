@@ -160,14 +160,14 @@ class App extends Component {
     const settings = {
       dots: true,
       infinite: true,
-      speed: 500,
+      speed: 300,
       slidesToShow: 1,
       slidesToScroll: 1,
       initialSlide: cafe_num,
       lazyLoad: true,
-      afterChange: (index) => {
-        this.clickCafeSearchSheet(index);
-        console.log(cafe_num);
+      afterChange: (new_index) => {
+        this.clickCafeSearchSheet(new_index);
+        console.log(new_index);
       },
     };
     return (
@@ -272,39 +272,11 @@ class App extends Component {
                     {...settings}
                   >
                     {cafe_list.map((cafe, index) => (
-                      <div className="w-screen h-96">
-                        <div class="w-full md:max-w-xs rounded overflow-hidden my-2">
-                          <img
-                            class="w-full"
-                            src="https://tailwindcss.com/img/card-top.jpg"
-                            alt="Sunset in the mountains"
-                          />
-                          <div class="px-6 py-4">
-                            <div class="font-bold text-xl mb-2">
-                              {cafe.title}
-                            </div>
-                            <p class="text-grey-darker text-base">
-                              <div>{cafe.name}</div>
-                              <div>{cafe.instagram}</div>
-                              <div>{cafe.address}</div>
-                              <div>{cafe.phone_number}</div>
-                              <div>{cafe.open_time}</div>
-                              <div>{cafe.meeting_time}</div>
-                              <div>{cafe.content}</div>
-                            </p>
-                          </div>
-                          <div class="px-6 py-4">
-                            <span class="inline-block bg-grey-lighter rounded-full px-3 py-1 text-sm font-semibold text-grey-darker mr-2">
-                              #photography
-                            </span>
-                            <span class="inline-block bg-grey-lighter rounded-full px-3 py-1 text-sm font-semibold text-grey-darker mr-2">
-                              #travel
-                            </span>
-                            <span class="inline-block bg-grey-lighter rounded-full px-3 py-1 text-sm font-semibold text-grey-darker">
-                              #winter
-                            </span>
-                          </div>
-                        </div>
+                      <div className="w-screen">
+                        <div>{cafe.title}</div>
+                        <div>{cafe.name}</div>
+                        <div>{cafe.instagram}</div>
+                        <div>{cafe.address}</div>
                       </div>
                     ))}
                   </Slider>
