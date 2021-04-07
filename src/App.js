@@ -8,6 +8,7 @@ import {
   faAlignJustify,
   faSmile,
   faMap,
+  faPhone,
 } from "@fortawesome/free-solid-svg-icons";
 import SwipeableBottomSheet from "react-swipeable-bottom-sheet";
 import "./assets/main.css";
@@ -17,7 +18,7 @@ import Slider from "react-slick";
 /*global kakao*/
 
 const map_level = 3;
-const panTo_latlngX = 0.0025;
+const panTo_latlngX = 0.00225;
 
 class App extends Component {
   constructor(props) {
@@ -72,15 +73,12 @@ class App extends Component {
   }
 
   getJson = () => {
-    let data = fetch(
-      "http://ec2-15-165-235-103.ap-northeast-2.compute.amazonaws.com/api/v1/cafes/",
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-      }
-    ).then(function (response) {
+    let data = fetch("https://powerbyjeseok.link/api/v1/cafes/", {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    }).then(function (response) {
       return response.json();
     });
     return data;
@@ -162,10 +160,12 @@ class App extends Component {
     const settings = {
       dots: true,
       infinite: true,
-      speed: 300,
+      speed: 400,
       slidesToShow: 1,
       slidesToScroll: 1,
+      swipeToSlide: true,
       initialSlide: cafe_num,
+
       afterChange: (new_index) => {
         this.clickCafeSearchSheet(new_index);
         console.log(new_index);
@@ -273,54 +273,67 @@ class App extends Component {
                     onClick={this.toggleBottomSheet.bind(this)}
                   />
                 )}
-                <div className="w-screen mt-6 pb-16">
-                  <Slider
-                    ref={(slider) => (this.slider = slider)}
-                    {...settings}
-                  >
-                    {cafe_list.map((cafe, index) => (
-                      <div className="w-screen">
-                        <div className="min-h-screen min-w-screen bg-gray-100 flex items-center justify-center">
-                          <div>
-                            <div className="flex flex-col max-w-md bg-white px-8 py-6 rounded-xl space-y-3 items-center">
-                              <h3 className="font-serif font-bold text-gray-900 text-xl">
-                                {cafe.title}
-                              </h3>
-                              <img
-                                className="w-full rounded-md"
-                                src={cafe.file}
-                                alt="motivation"
-                                key={index}
-                              />
-                              <div className="flex items-center mt-4 text-gray-700">
-                                <FontAwesomeIcon icon={faSmile} />
-                                <h1 className="px-2 text-sm"> {cafe.name}</h1>
-                              </div>
-                              <div className="flex items-center mt-4 text-gray-700">
-                                <h1 className="px-2 text-sm">
-                                  {cafe.instagram}
-                                </h1>
-                              </div>
-                              <div className="flex items-center mt-4 text-gray-700">
-                                <FontAwesomeIcon icon={faMap} />
-                                <h1 className="px-2 text-sm">{cafe.address}</h1>
-                              </div>
-                              <span className="text-center">
-                                {cafe.phone_number}
-                              </span>
-                              <p className="text-center leading-relaxed">
-                                {cafe.content}
-                              </p>
-                              <button className="px-24 py-4 bg-gray-900 rounded-md text-white text-sm focus:border-transparent">
-                                Read article
-                              </button>
+                <Slider ref={(slider) => (this.slider = slider)} {...settings}>
+                  {cafe_list.map((cafe, index) => (
+                    <div className="flex justify-center">
+                      <div className="min-h-screen min-w-screen bg-gray-100 flex items-start justify-center">
+                        <div>
+                          <div className="flex flex-col max-w-md bg-white px-8 py-6 rounded-xl space-y-4">
+                            <h3 className=" text-gray-800 text-2xl items-center mb-2">
+                              {cafe.title}
+                            </h3>
+                            <img
+                              className="w-full rounded-md"
+                              src={cafe.image1}
+                              alt="motivation"
+                              key={index}
+                            />
+                            <div className="flex items-center pt-3 text-gray-700">
+                              <FontAwesomeIcon icon={faSmile} />
+                              <h1 className="px-2 text-sm">
+                                {" "}
+                                {cafe.name} 사장님
+                              </h1>
                             </div>
+                            <div className="flex items-center mt-4 text-gray-700">
+                              <FontAwesomeIcon icon={faSearch} />
+                              <a className="px-2 text-sm" href={cafe.instagram}>
+                                {cafe.instagram}
+                              </a>
+                            </div>
+                            <div className="flex items-center mt-4 text-gray-700">
+                              <FontAwesomeIcon icon={faMap} />
+                              <h1 className="px-2 text-sm">{cafe.address}</h1>
+                            </div>
+                            <div className="flex items-center mt-4 text-gray-700">
+                              <FontAwesomeIcon icon={faPhone} />
+                              <h1 className="px-2 text-sm">
+                                {cafe.phone_number}
+                              </h1>
+                            </div>
+
+                            <p className="text-left leading-relaxed pt-5">
+                              {cafe.content.split("\n").map((line) => {
+                                return (
+                                  <span>
+                                    {line}
+                                    <br />
+                                  </span>
+                                );
+                              })}
+                            </p>
+                            <a
+                              className="px-24 py-4 bg-blue-500 rounded-md text-white text-lg focus:border-transparent"
+                              href=""
+                            >
+                              찾아가기
+                            </a>
                           </div>
                         </div>
                       </div>
-                    ))}
-                  </Slider>
-                </div>
+                    </div>
+                  ))}
+                </Slider>
               </div>
             </SwipeableBottomSheet>
           </>
