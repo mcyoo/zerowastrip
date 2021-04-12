@@ -9,17 +9,19 @@ import {
   faSmile,
   faMap,
   faPhone,
+  faClock,
+  faDirections,
 } from "@fortawesome/free-solid-svg-icons";
 import SwipeableBottomSheet from "react-swipeable-bottom-sheet";
 import "./assets/main.css";
-import smile_icon from "./assets/img/green_cafe.png";
+import bottle from "./assets/img/blue_coffee.png";
+import you_here from "./assets/img/you_here.png";
 import Slider from "react-slick";
 
 /*global kakao*/
 
-const map_level = 3;
-const panTo_latlngX = 0.00225;
-
+const map_level = 5;
+const panTo_latlngX = 0.009;
 class App extends Component {
   constructor(props) {
     super(props);
@@ -111,7 +113,7 @@ class App extends Component {
         let container = document.getElementById("Mymap");
         let options = {
           center: new kakao.maps.LatLng(33.371776, 126.543786),
-          level: 9,
+          level: 10,
         };
         const map = new window.kakao.maps.Map(container, options);
         this.setState({ map });
@@ -119,15 +121,14 @@ class App extends Component {
         var positions = this.state.cafe_list;
 
         // 마커 이미지의 이미지 주소입니다
-        var imageSrc = smile_icon;
+        var imageSrc = bottle;
 
         for (var i = 0; i < positions.length; i++) {
           // 마커 이미지의 이미지 크기 입니다
-          var imageSize = new kakao.maps.Size(45, 45);
+          var imageSize = new kakao.maps.Size(40, 40);
 
           // 마커 이미지를 생성합니다
           var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
-
           // 마커를 생성합니다
           var marker = new kakao.maps.Marker({
             map: map, // 마커를 표시할 지도
@@ -148,9 +149,33 @@ class App extends Component {
               map.setLevel(map_level);
               panTo(cafe_data.lat - panTo_latlngX, cafe_data.lng);
               react_function.setState({ open: true, cafe_num: num });
-              react_function.slider.slickGoTo(num);
+              react_function.slider.slickGoTo(num, true);
             };
           }
+        }
+        // HTML5의 geolocation으로 사용할 수 있는지 확인합니다
+        if (navigator.geolocation) {
+          // GeoLocation을 이용해서 접속 위치를 얻어옵니다
+          navigator.geolocation.getCurrentPosition(function (position) {
+            var lat = position.coords.latitude, // 위도
+              lon = position.coords.longitude; // 경도
+
+            var locPosition = new kakao.maps.LatLng(lat, lon); // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
+            var imageSrc = you_here;
+            var imageSize = new kakao.maps.Size(30, 30);
+            var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+
+            // 마커를 생성합니다
+            var marker = new kakao.maps.Marker({
+              map: map, // 마커를 표시할 지도
+              position: locPosition, // 마커를 표시할 위치
+              image: markerImage, // 마커 이미지
+            });
+            map.setLevel(8);
+            map.panTo(locPosition);
+          });
+        } else {
+          alert("사용자 위치정보를 확인 할 수 없습니다.");
         }
       });
     };
@@ -158,9 +183,11 @@ class App extends Component {
   render() {
     const { open, open_search, cafe_list, cafe_num, map } = this.state;
     const settings = {
+      adaptiveHeight: true,
+      arrows: false,
       dots: true,
       infinite: true,
-      speed: 400,
+      speed: 500,
       slidesToShow: 1,
       slidesToScroll: 1,
       swipeToSlide: true,
@@ -172,8 +199,11 @@ class App extends Component {
       },
     };
     return (
-      <div className="flex z-0">
-        <div id="Mymap" className="w-screen h-screen z-0"></div>
+      <div className="flex">
+        <div
+          id="Mymap"
+          className="w-screen h-screen z-0 fixed overflow-hidden overscroll-none"
+        ></div>
         {open ? null : (
           <>
             <div className="flex justify-center md:justify-start fixed container z-30">
@@ -253,47 +283,45 @@ class App extends Component {
         ) : (
           <>
             <SwipeableBottomSheet
-              overflowHeight={48}
+              overflowHeight={46}
               shadowTip={false}
               topShadow={false}
               open={open}
               onChange={this.openBottomSheet.bind(this)}
             >
-              <div className="h-99 z-30 text-center">
+              <div className="text-center z-50 pb-10">
                 {open ? (
                   <FontAwesomeIcon
                     icon={faAngleDown}
-                    className="mt-1 text-2xl opacity-50"
+                    className="mt-1 text-2xl opacity-50 mb-6"
                     onClick={this.toggleBottomSheet.bind(this)}
                   />
                 ) : (
                   <FontAwesomeIcon
                     icon={faAngleUp}
-                    className="mt-1 text-2xl opacity-50"
+                    className="mt-1 text-2xl opacity-50 mb-6"
                     onClick={this.toggleBottomSheet.bind(this)}
                   />
                 )}
                 <Slider ref={(slider) => (this.slider = slider)} {...settings}>
                   {cafe_list.map((cafe, index) => (
                     <div className="flex justify-center">
-                      <div className="min-h-screen min-w-screen bg-gray-100 flex items-start justify-center">
+                      <div className="min-w-screen md:w-screen h-96 bg-gray-100 flex items-start justify-center mb-2 z-50 overflow-auto">
                         <div>
-                          <div className="flex flex-col max-w-md bg-white px-8 py-6 rounded-xl space-y-4">
-                            <h3 className=" text-gray-800 text-2xl items-center mb-2">
+                          <div className="flex flex-col max-w-md bg-white px-8 py-2 space-y-4">
+                            <h3 className=" text-gray-800 text-xl items-center mb-0 font-bold">
                               {cafe.title}
                             </h3>
                             <img
-                              className="w-full rounded-md"
+                              className="rounded-md"
                               src={cafe.image1}
                               alt="motivation"
                               key={index}
                             />
-                            <div className="flex items-center pt-3 text-gray-700">
+
+                            <div className="flex pt-3 text-gray-700">
                               <FontAwesomeIcon icon={faSmile} />
-                              <h1 className="px-2 text-sm">
-                                {" "}
-                                {cafe.name} 사장님
-                              </h1>
+                              <h1 className="px-2 text-sm">{cafe.name}</h1>
                             </div>
                             <div className="flex items-center mt-4 text-gray-700">
                               <FontAwesomeIcon icon={faSearch} />
@@ -311,8 +339,19 @@ class App extends Component {
                                 {cafe.phone_number}
                               </h1>
                             </div>
-
-                            <p className="text-left leading-relaxed pt-5">
+                            <div className="flex mt-4 text-gray-700 items-center">
+                              <FontAwesomeIcon icon={faClock} />
+                              {cafe.cafe_open ? (
+                                <p className="ml-2 px-2 inline-flex text-sm leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                  Open
+                                </p>
+                              ) : (
+                                <p className="ml-2 px-2 inline-flex text-sm leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                  Close
+                                </p>
+                              )}
+                            </div>
+                            <p className="text-left leading-relaxed pt-5 break-words">
                               {cafe.content.split("\n").map((line) => {
                                 return (
                                   <span>
@@ -324,7 +363,7 @@ class App extends Component {
                             </p>
                             <a
                               className="px-24 py-4 bg-blue-500 rounded-md text-white text-lg focus:border-transparent"
-                              href=""
+                              href={cafe.kakaomap_url}
                             >
                               찾아가기
                             </a>
