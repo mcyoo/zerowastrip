@@ -211,7 +211,7 @@ class App extends Component {
           <>
             <div
               id="Mymap"
-              className="w-screen h-screen z-0 fixed overflow-hidden overscroll-none"
+              className="w-screen h-screen z-0 overflow-hidden overscroll-none"
             ></div>
             {open ? null : (
               <>

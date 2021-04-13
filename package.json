@@ -34,7 +34,6 @@
     "deploy": "gh-pages -d build",
     "predeploy": "npm run build"
   },
-  "homepage": "https://mcyoo.github.io/zerowastrip",
   "eslintConfig": {
     "extends": [
       "react-app",
