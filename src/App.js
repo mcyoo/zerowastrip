@@ -318,9 +318,9 @@ class App extends Component {
                     >
                       {cafe_list.map((cafe, index) => (
                         <div className="flex justify-center">
-                          <div className="min-w-screen md:w-screen h-96 bg-gray-100 flex items-start justify-center mb-2 z-50 overflow-auto">
+                          <div className="min-w-screen md:w-screen h-96 bg-gray-100 flex items-start justify-center mb-2 z-50 overflow-y-scroll overflow-x-hidden">
                             <div>
-                              <div className="flex flex-col max-w-md bg-white px-8 py-2 space-y-4">
+                              <div className="flex flex-col max-w-xl bg-white px-8 py-2 space-y-4">
                                 <h3 className=" text-gray-800 text-xl items-center mb-0 font-bold">
                                   {cafe.title}
                                 </h3>
