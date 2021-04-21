@@ -229,7 +229,7 @@ class App extends Component {
       },
     };
     return (
-      <div className="flex overflow-hidden overscroll-none">
+      <div className="flex overflow-hidden overscroll-none w-screen h-screen z-0 ">
         <div
           id="Mymap"
           className="w-screen h-screen z-0 overflow-hidden overscroll-none"
@@ -269,7 +269,7 @@ class App extends Component {
         )}
         {open_search ? (
           <>
-            <div className="w-screen h-screen z-20 fixed bg-white">
+            <div className="w-screen h-screen z-20 fixed bg-white overflow-auto">
               <div className="bg-white shadow overflow-hidden sm:rounded-md mt-24">
                 <ul className="divide-y divide-gray-200">
                   {cafe_list.map((cafe, index) => (
@@ -318,10 +318,7 @@ class App extends Component {
               topShadow={false}
               open={open}
               onChange={this.openBottomSheet.bind(this)}
-              bodyStyle={{
-                height: "100%",
-                overflow: "hidden",
-              }}
+              bodyStyle={{}}
             >
               <div className="text-center">
                 {open ? (
@@ -338,12 +335,11 @@ class App extends Component {
                   />
                 )}
               </div>
-
               <Slider ref={(slider) => (this.slider = slider)} {...settings}>
                 {cafe_list.map((cafe, index) => (
                   <div className="flex justify-center text-center bg-gray-100 z-50">
                     <div className="flex justify-center">
-                      <div className="flex flex-col max-w-xl h-99 bg-white px-8 py-2 space-y-4 z-50 overflow-y-auto overflow-x-hidden">
+                      <div className="flex flex-col max-w-xl h-99 bg-white px-8 py-2 space-y-4 z-50 overflow-y-scroll overflow-x-hidden">
                         <h3 className=" text-gray-800 text-xl items-center mb-0 font-bold text-center">
                           {cafe.title}
                         </h3>
