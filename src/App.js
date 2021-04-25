@@ -38,7 +38,6 @@ class App extends Component {
   }
 
   openBottomSheet(open, num = this.state.cafe_num) {
-    console.log(num);
     this.setState({ open, open_search: false, cafe_num: num });
     var panTo_latlngX_default = 0;
     if (open === true) {
@@ -97,7 +96,6 @@ class App extends Component {
             title: positions[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
             image: markerImage, // 마커 이미지
           });
-          console.log(map);
           // 마커에 클릭이벤트를 등록합니다
           kakao.maps.event.addListener(
             marker,
@@ -152,7 +150,6 @@ class App extends Component {
 
   getData = async () => {
     const { results } = await this.getJson();
-    console.log(results);
     this.setState({
       cafe_list: results,
       loading: false,
@@ -177,7 +174,6 @@ class App extends Component {
           level: 10,
         };
         const map = new window.kakao.maps.Map(container, options);
-        console.log(map);
         this.setState({
           map: map,
         });
@@ -225,14 +221,13 @@ class App extends Component {
 
       afterChange: (new_index) => {
         this.clickCafeSearchSheet(new_index);
-        console.log(new_index);
       },
     };
     return (
-      <div className="flex overflow-hidden overscroll-none w-screen h-screen z-0 ">
+      <div className="flex overflow-hidden overscroll-none w-screen h-screen z-0 main">
         <div
           id="Mymap"
-          className="w-screen h-screen z-0 overflow-hidden overscroll-none"
+          className="w-screen h-93 z-0 overflow-hidden overscroll-none"
         ></div>
         {open ? null : (
           <>
@@ -242,6 +237,7 @@ class App extends Component {
                 name="cafe"
                 placeholder="환경카페 찾기"
                 onClick={this.openInputSheet.bind(this)}
+                readOnly
               />
             </div>
             <div className="flex justify-end md:justify-start fixed container z-30">
