@@ -155,8 +155,12 @@ class App extends Component {
       loading: false,
     });
   };
+
   componentDidUpdate() {
-    this.cafeSetMap();
+    if (temp < 2) {
+      this.cafeSetMap();
+      temp++;
+    }
   }
   componentDidMount() {
     this.getData();
@@ -265,8 +269,8 @@ class App extends Component {
         )}
         {open_search ? (
           <>
-            <div className="w-screen h-screen z-20 fixed bg-white overflow-auto">
-              <div className="bg-white shadow overflow-hidden sm:rounded-md mt-24">
+            <div className="w-screen h-screen z-20 fixed bg-white overflow-auto py-24">
+              <div className="bg-white shadow sm:rounded-md overflow-auto">
                 <ul className="divide-y divide-gray-200">
                   {cafe_list.map((cafe, index) => (
                     <li>
@@ -346,9 +350,11 @@ class App extends Component {
                           key={index}
                         />
 
-                        <div className="flex pt-3 text-gray-700">
+                        <div className="flex pt-3 text-gray-700 items-center">
                           <FontAwesomeIcon icon={faSmile} />
-                          <h1 className="px-2 text-sm">{cafe.name}</h1>
+                          <h1 className="px-2 text-base text font-bold">
+                            {cafe.name}
+                          </h1>
                         </div>
                         <div className="flex items-center mt-4 text-gray-700">
                           <FontAwesomeIcon icon={faSearch} />
