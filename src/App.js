@@ -6,14 +6,13 @@ import {
   faAngleDown,
   faAngleLeft,
   faAlignJustify,
-  faSmile,
   faMap,
   faPhone,
   faClock,
 } from "@fortawesome/free-solid-svg-icons";
 import SwipeableBottomSheet from "react-swipeable-bottom-sheet";
 import "./assets/main.css";
-import bottle from "./assets/img/blue_coffee.png";
+import bottle from "./assets/img/symbol.png";
 import you_here from "./assets/img/you_here.png";
 import Slider from "react-slick";
 import axios from "axios";
@@ -83,7 +82,7 @@ class App extends Component {
         var imageSrc = bottle;
 
         // 마커 이미지의 이미지 크기 입니다
-        var imageSize = new kakao.maps.Size(40, 40);
+        var imageSize = new kakao.maps.Size(20, 30);
 
         // 마커 이미지를 생성합니다
         var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
@@ -211,7 +210,7 @@ class App extends Component {
     };
   }
   render() {
-    const { open, open_search, cafe_list, cafe_num, loading } = this.state;
+    const { open, open_search, cafe_list, cafe_num } = this.state;
     const settings = {
       adaptiveHeight: true,
       arrows: false,
@@ -239,7 +238,7 @@ class App extends Component {
               <input
                 className="w-10/12 border mt-5 pl-12 font-medium text-gray-900 placeholder-gray-400 py-3 md:py-3 rounded-md focus:outline-none md:ml-10 md:mt-10 md:w-1/3"
                 name="cafe"
-                placeholder="환경카페 찾기"
+                placeholder="참여카페 찾기"
                 onClick={this.openInputSheet.bind(this)}
                 readOnly
               />
@@ -340,9 +339,12 @@ class App extends Component {
                   <div className="flex justify-center text-center bg-gray-100 z-50">
                     <div className="flex justify-center">
                       <div className="flex flex-col max-w-xl h-99 bg-white px-8 py-2 space-y-4 z-50 overflow-y-scroll overflow-x-hidden">
-                        <h3 className=" text-gray-800 text-xl items-center mb-0 font-bold text-center">
+                        <h3 className=" text-gray-800 text-xl items-center font-bold text-center">
                           {cafe.title}
                         </h3>
+                        <h1 className="text-md font-bold text-blue-500">
+                          "{cafe.name}"
+                        </h1>
                         <img
                           className="rounded-md"
                           src={cafe.image1}
@@ -350,12 +352,6 @@ class App extends Component {
                           key={index}
                         />
 
-                        <div className="flex pt-3 text-gray-700 items-center">
-                          <FontAwesomeIcon icon={faSmile} />
-                          <h1 className="px-2 text-base text font-bold">
-                            {cafe.name}
-                          </h1>
-                        </div>
                         <div className="flex items-center mt-4 text-gray-700">
                           <FontAwesomeIcon icon={faSearch} />
                           <a className="px-2 text-sm" href={cafe.instagram}>
