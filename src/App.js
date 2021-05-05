@@ -323,13 +323,13 @@ class App extends Component {
                 {open ? (
                   <FontAwesomeIcon
                     icon={faAngleDown}
-                    className="mt-1 text-3xl opacity-50 mb-6"
+                    className="mt-1 text-3xl md:text-4xl opacity-50 mb-6"
                     onClick={this.toggleBottomSheet.bind(this)}
                   />
                 ) : (
                   <FontAwesomeIcon
                     icon={faAngleUp}
-                    className="mt-1 text-3xl opacity-50 mb-6"
+                    className="mt-1 text-3xl md:text-4xl opacity-50 mb-6"
                     onClick={this.toggleBottomSheet.bind(this)}
                   />
                 )}
