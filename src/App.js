@@ -13,7 +13,7 @@ import {
 import SwipeableBottomSheet from "react-swipeable-bottom-sheet";
 import "./assets/main.css";
 import bottle from "./assets/img/symbol.png";
-import you_here from "./assets/img/you_here.png";
+import youarehere from "./assets/img/youarehere.png";
 import Slider from "react-slick";
 import axios from "axios";
 
@@ -189,7 +189,7 @@ class App extends Component {
               lon = position.coords.longitude; // 경도
 
             var locPosition = new kakao.maps.LatLng(lat, lon); // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
-            var imageSrc = you_here;
+            var imageSrc = youarehere;
             var imageSize = new kakao.maps.Size(30, 30);
             var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
 
