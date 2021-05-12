@@ -283,7 +283,11 @@ class App extends Component {
                               {cafe.address}
                             </p>
                             <div className="ml-2 flex-shrink-0 flex">
-                              {cafe.cafe_open ? (
+                              {cafe.check_time ? (
+                                <p className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-green-800">
+                                  오픈확인
+                                </p>
+                              ) : cafe.cafe_open ? (
                                 <p className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                                   Open
                                 </p>
@@ -357,6 +361,7 @@ class App extends Component {
                           <a className="px-2 text-sm" href={cafe.instagram}>
                             {cafe.instagram}
                           </a>
+                          <div className="flex items-end">asdf</div>
                         </div>
                         <div className="flex items-center mt-4 text-gray-700">
                           <FontAwesomeIcon icon={faMap} />
@@ -368,12 +373,16 @@ class App extends Component {
                         </div>
                         <div className="flex mt-4 text-gray-700 items-center">
                           <FontAwesomeIcon icon={faClock} />
-                          {cafe.cafe_open ? (
-                            <p className="ml-2 px-2 inline-flex text-sm leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                          {cafe.check_time ? (
+                            <p className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-green-800">
+                              오픈확인
+                            </p>
+                          ) : cafe.cafe_open ? (
+                            <p className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                               Open
                             </p>
                           ) : (
-                            <p className="ml-2 px-2 inline-flex text-sm leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                            <p className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
                               Close
                             </p>
                           )}
