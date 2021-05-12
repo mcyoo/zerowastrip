@@ -361,7 +361,6 @@ class App extends Component {
                           <a className="px-2 text-sm" href={cafe.instagram}>
                             {cafe.instagram}
                           </a>
-                          <div className="flex items-end">asdf</div>
                         </div>
                         <div className="flex items-center mt-4 text-gray-700">
                           <FontAwesomeIcon icon={faMap} />
