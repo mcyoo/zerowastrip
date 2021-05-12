@@ -12,7 +12,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import SwipeableBottomSheet from "react-swipeable-bottom-sheet";
 import "./assets/main.css";
-import bottle from "./assets/img/symbol.png";
+import bottle from "./assets/img/cafe.png";
 import youarehere from "./assets/img/youarehere.png";
 import Slider from "react-slick";
 import axios from "axios";
@@ -82,7 +82,7 @@ class App extends Component {
         var imageSrc = bottle;
 
         // 마커 이미지의 이미지 크기 입니다
-        var imageSize = new kakao.maps.Size(20, 30);
+        var imageSize = new kakao.maps.Size(40, 40);
 
         // 마커 이미지를 생성합니다
         var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
@@ -190,7 +190,7 @@ class App extends Component {
 
             var locPosition = new kakao.maps.LatLng(lat, lon); // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
             var imageSrc = youarehere;
-            var imageSize = new kakao.maps.Size(30, 30);
+            var imageSize = new kakao.maps.Size(36, 36);
             var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
 
             // 마커를 생성합니다
@@ -338,7 +338,7 @@ class App extends Component {
                 {cafe_list.map((cafe, index) => (
                   <div className="flex justify-center text-center bg-gray-100 z-50">
                     <div className="flex justify-center">
-                      <div className="flex flex-col max-w-xl h-99 bg-white px-8 py-2 space-y-4 z-50 overflow-y-scroll overflow-x-hidden">
+                      <div className="flex flex-col max-w-xl bg-white px-8 py-2 space-y-4 z-50 overflow-y-scroll overflow-x-hidden h-99">
                         <h3 className=" text-gray-800 text-xl items-center font-bold text-center">
                           {cafe.title}
                         </h3>

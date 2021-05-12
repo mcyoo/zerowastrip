@@ -69,7 +69,7 @@ module.exports = {
       96: "24rem",
       97: "70%", //search icon
       98: "28%", //search icon
-      99: "30rem",
+      99: "60vh",
     },
     animation: {
       none: "none",
