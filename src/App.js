@@ -12,7 +12,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import SwipeableBottomSheet from "react-swipeable-bottom-sheet";
 import "./assets/main.css";
-import bottle from "./assets/img/cafe.png";
+import pruncup_cafe from "./assets/img/pruncup_cafe.png";
 import youarehere from "./assets/img/youarehere.png";
 import Slider from "react-slick";
 import axios from "axios";
@@ -79,10 +79,10 @@ class App extends Component {
         }
 
         // 마커 이미지의 이미지 주소입니다
-        var imageSrc = bottle;
+        var imageSrc = pruncup_cafe;
 
         // 마커 이미지의 이미지 크기 입니다
-        var imageSize = new kakao.maps.Size(40, 40);
+        var imageSize = new kakao.maps.Size(43, 65);
 
         // 마커 이미지를 생성합니다
         var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
@@ -243,15 +243,10 @@ class App extends Component {
                 readOnly
               />
             </div>
-            <div className="flex justify-end md:justify-start fixed container z-30">
-              <div className="fixed flex z-30 mt-9 md:mt-14 pr-14 md:ml-98 text-lg">
-                <FontAwesomeIcon icon={faSearch} />
-              </div>
-            </div>
             {open_search ? (
               <div className="flex justify-start fixed container z-30">
                 <div
-                  className="fixed flex z-30 mt-8 md:mt-14 ml-12 text-2xl w-12 h-12"
+                  className="fixed flex z-30 mt-8 md:mt-12 ml-14 text-3xl w-12 h-12"
                   onClick={this.closeInputSheet.bind(this)}
                 >
                   <FontAwesomeIcon icon={faAngleLeft} />
@@ -259,8 +254,8 @@ class App extends Component {
               </div>
             ) : (
               <div className="flex justify-start fixed container z-30">
-                <div className="fixed flex z-30 mt-9 md:mt-14 ml-12 text-lg">
-                  <FontAwesomeIcon icon={faAlignJustify} />
+                <div className="fixed flex z-30 mt-9 md:mt-14 ml-14 text-lg">
+                  <FontAwesomeIcon icon={faSearch} />
                 </div>
               </div>
             )}
@@ -368,7 +363,12 @@ class App extends Component {
                         </div>
                         <div className="flex items-center mt-4 text-gray-700">
                           <FontAwesomeIcon icon={faPhone} />
-                          <h1 className="px-2 text-sm">{cafe.phone_number}</h1>
+                          <a
+                            className="px-2 text-sm"
+                            href={"tel:" + cafe.phone_number}
+                          >
+                            {cafe.phone_number}
+                          </a>
                         </div>
                         <div className="flex mt-4 text-gray-700 items-center">
                           <FontAwesomeIcon icon={faClock} />
