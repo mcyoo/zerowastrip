@@ -5,7 +5,6 @@ import {
   faAngleUp,
   faAngleDown,
   faAngleLeft,
-  faAlignJustify,
   faMap,
   faPhone,
   faClock,
@@ -215,9 +214,8 @@ class App extends Component {
       adaptiveHeight: true,
       arrows: false,
       dots: false,
-      lazyLoad: true,
       infinite: true,
-      speed: 600,
+      speed: 700,
       slidesToShow: 1,
       slidesToScroll: 1,
       swipeToSlide: true,
@@ -342,16 +340,6 @@ class App extends Component {
                         <h3 className=" text-gray-800 text-xl items-center font-bold text-center">
                           {cafe.title}
                         </h3>
-                        <h1 className="text-md font-bold text-blue-500">
-                          "{cafe.name}"
-                        </h1>
-                        <img
-                          className="rounded-md"
-                          src={cafe.image1}
-                          alt="motivation"
-                          key={index}
-                        />
-
                         <div className="flex items-center mt-4 text-gray-700">
                           <FontAwesomeIcon icon={faSearch} />
                           <a className="px-2 text-sm" href={cafe.instagram}>
