@@ -15,6 +15,7 @@ import pruncup_cafe from "./assets/img/pruncup_cafe.png";
 import youarehere from "./assets/img/youarehere.png";
 import Slider from "react-slick";
 import axios from "axios";
+import { faInstagram } from "@fortawesome/free-brands-svg-icons";
 
 /*global kakao*/
 
@@ -32,8 +33,16 @@ class App extends Component {
       cafe_num: 0,
       loading: true,
       map: null,
+      userInput: "",
     };
   }
+
+  // SearchBox 에 props로 넘겨줄 handleChange 메소드 정의
+  handleInput = (e) => {
+    this.setState({
+      userInput: e.target.value,
+    });
+  };
 
   openBottomSheet(open, num = this.state.cafe_num) {
     this.setState({ open, open_search: false, cafe_num: num });
@@ -210,6 +219,11 @@ class App extends Component {
   }
   render() {
     const { open, open_search, cafe_list, cafe_num } = this.state;
+    const { handleInput } = this;
+    const filteredCafe = this.state.cafe_list.filter((cafe) => {
+      return cafe.title.toLowerCase().includes(this.state.userInput);
+    });
+
     const settings = {
       adaptiveHeight: true,
       arrows: false,
@@ -237,9 +251,10 @@ class App extends Component {
               <input
                 className="w-10/12 border mt-5 pl-12 font-medium text-gray-900 placeholder-gray-400 py-3 md:py-3 rounded-md focus:outline-none md:ml-10 md:mt-10 md:w-1/3"
                 name="cafe"
+                type="search"
                 placeholder="참여카페 찾기"
+                onChange={this.handleInput}
                 onClick={this.openInputSheet.bind(this)}
-                readOnly
               />
             </div>
             {open_search ? (
@@ -265,11 +280,11 @@ class App extends Component {
             <div className="w-screen h-screen z-20 fixed bg-white overflow-auto py-24">
               <div className="bg-white shadow sm:rounded-md overflow-auto">
                 <ul className="divide-y divide-gray-200">
-                  {cafe_list.map((cafe, index) => (
+                  {filteredCafe.map((cafe, index) => (
                     <li>
                       <a
                         className="block hover:bg-gray-50"
-                        onClick={() => this.clickCafeSearchSheet(index)}
+                        onClick={() => this.clickCafeSearchSheet(cafe.id - 1)}
                       >
                         <div className="px-4 py-4 sm:px-6">
                           <div className="flex items-center justify-between">
@@ -334,65 +349,66 @@ class App extends Component {
               </div>
               <Slider ref={(slider) => (this.slider = slider)} {...settings}>
                 {cafe_list.map((cafe, index) => (
-                  <div className="flex justify-center text-center bg-gray-100 z-50">
-                    <div className="flex justify-center">
-                      <div className="flex flex-col max-w-xl bg-white px-8 py-2 space-y-4 z-50 overflow-y-scroll overflow-x-hidden h-99">
-                        <h3 className=" text-gray-800 text-xl items-center font-bold text-center">
-                          {cafe.title}
-                        </h3>
-                        <div className="flex items-center mt-4 text-gray-700">
-                          <FontAwesomeIcon icon={faSearch} />
-                          <a className="px-2 text-sm" href={cafe.instagram}>
-                            {cafe.instagram}
-                          </a>
-                        </div>
-                        <div className="flex items-center mt-4 text-gray-700">
-                          <FontAwesomeIcon icon={faMap} />
-                          <h1 className="px-2 text-sm">{cafe.address}</h1>
-                        </div>
-                        <div className="flex items-center mt-4 text-gray-700">
-                          <FontAwesomeIcon icon={faPhone} />
-                          <a
-                            className="px-2 text-sm"
-                            href={"tel:" + cafe.phone_number}
-                          >
-                            {cafe.phone_number}
-                          </a>
-                        </div>
-                        <div className="flex mt-4 text-gray-700 items-center">
-                          <FontAwesomeIcon icon={faClock} />
-                          {cafe.check_time ? (
-                            <p className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-green-800">
-                              오픈확인
-                            </p>
-                          ) : cafe.cafe_open ? (
-                            <p className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                              Open
-                            </p>
-                          ) : (
-                            <p className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-                              Close
-                            </p>
-                          )}
-                        </div>
-                        <p className="text-left leading-relaxed pt-5 break-words">
-                          {cafe.content.split("\n").map((line) => {
-                            return (
-                              <span>
-                                {line}
-                                <br />
-                              </span>
-                            );
-                          })}
-                        </p>
-                        <a
-                          className="px-24 py-4 bg-blue-500 rounded-md text-white text-lg focus:border-transparent"
-                          href={cafe.kakaomap_url}
-                        >
-                          찾아가기
-                        </a>
-                      </div>
+                  <div className="flex flex-col z-50 h-99 justify-center items-center text-center justify-center">
+                    <h3 className=" text-gray-800 text-xl items-center font-bold">
+                      {cafe.title}
+                    </h3>
+                    <div className="flex items-center mt-4 text-gray-700 ml-5 md:ml-10">
+                      <FontAwesomeIcon className="text-xl" icon={faInstagram} />
+                      <a
+                        className="px-2 text-sm"
+                        href={
+                          "https://www.instagram.com/" + cafe.instagram.slice(1)
+                        }
+                      >
+                        {cafe.instagram}
+                      </a>
                     </div>
+                    <div className="flex items-center mt-4 text-gray-700 ml-5 md:ml-10">
+                      <FontAwesomeIcon icon={faMap} />
+                      <h1 className="px-2 text-sm">{cafe.address}</h1>
+                    </div>
+                    <div className="flex items-center mt-4 text-gray-700 ml-5 md:ml-10">
+                      <FontAwesomeIcon icon={faPhone} />
+                      <a
+                        className="px-2 text-sm"
+                        href={"tel:" + cafe.phone_number}
+                      >
+                        {cafe.phone_number}
+                      </a>
+                    </div>
+                    <div className="flex mt-4 text-gray-700 items-center ml-5 md:ml-10">
+                      <FontAwesomeIcon className="mr-2" icon={faClock} />
+                      {cafe.check_time ? (
+                        <p className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-green-800">
+                          오픈확인
+                        </p>
+                      ) : cafe.cafe_open ? (
+                        <p className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                          Open
+                        </p>
+                      ) : (
+                        <p className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                          Close
+                        </p>
+                      )}
+                    </div>
+                    <p className="text-left leading-relaxed pt-5 break-words">
+                      {cafe.content.split("\n").map((line) => {
+                        return (
+                          <span>
+                            {line}
+                            <br />
+                          </span>
+                        );
+                      })}
+                    </p>
+                    <a
+                      className="px-24 py-4 bg-blue-500 rounded-md text-white text-lg focus:border-transparent"
+                      href={cafe.kakaomap_url}
+                    >
+                      찾아가기
+                    </a>
                   </div>
                 ))}
               </Slider>
