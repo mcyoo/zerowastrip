@@ -1,24 +1,24 @@
 {
   "files": {
     "main.css": "/zerowastrip/static/css/main.d2b8758e.chunk.css",
-    "main.js": "/zerowastrip/static/js/main.7e5e475d.chunk.js",
-    "main.js.map": "/zerowastrip/static/js/main.7e5e475d.chunk.js.map",
+    "main.js": "/zerowastrip/static/js/main.82d4a835.chunk.js",
+    "main.js.map": "/zerowastrip/static/js/main.82d4a835.chunk.js.map",
     "runtime-main.js": "/zerowastrip/static/js/runtime-main.b80e7ee6.js",
     "runtime-main.js.map": "/zerowastrip/static/js/runtime-main.b80e7ee6.js.map",
     "static/css/2.f94ac72c.chunk.css": "/zerowastrip/static/css/2.f94ac72c.chunk.css",
-    "static/js/2.71e70276.chunk.js": "/zerowastrip/static/js/2.71e70276.chunk.js",
-    "static/js/2.71e70276.chunk.js.map": "/zerowastrip/static/js/2.71e70276.chunk.js.map",
+    "static/js/2.9dbd5ff5.chunk.js": "/zerowastrip/static/js/2.9dbd5ff5.chunk.js",
+    "static/js/2.9dbd5ff5.chunk.js.map": "/zerowastrip/static/js/2.9dbd5ff5.chunk.js.map",
     "index.html": "/zerowastrip/index.html",
     "static/css/2.f94ac72c.chunk.css.map": "/zerowastrip/static/css/2.f94ac72c.chunk.css.map",
     "static/css/main.d2b8758e.chunk.css.map": "/zerowastrip/static/css/main.d2b8758e.chunk.css.map",
-    "static/js/2.71e70276.chunk.js.LICENSE.txt": "/zerowastrip/static/js/2.71e70276.chunk.js.LICENSE.txt",
+    "static/js/2.9dbd5ff5.chunk.js.LICENSE.txt": "/zerowastrip/static/js/2.9dbd5ff5.chunk.js.LICENSE.txt",
     "static/media/slick-theme.css": "/zerowastrip/static/media/slick.c94f7671.ttf"
   },
   "entrypoints": [
     "static/js/runtime-main.b80e7ee6.js",
     "static/css/2.f94ac72c.chunk.css",
-    "static/js/2.71e70276.chunk.js",
+    "static/js/2.9dbd5ff5.chunk.js",
     "static/css/main.d2b8758e.chunk.css",
-    "static/js/main.7e5e475d.chunk.js"
+    "static/js/main.82d4a835.chunk.js"
   ]
 }
