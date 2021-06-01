@@ -339,13 +339,13 @@ class App extends Component {
                 {open ? (
                   <FontAwesomeIcon
                     icon={faAngleDown}
-                    className="mt-1 text-3xl md:text-4xl opacity-50 mb-6"
+                    className="mt-1 text-3xl md:text-4xl opacity-50 mb-2"
                     onClick={this.toggleBottomSheet.bind(this)}
                   />
                 ) : (
                   <FontAwesomeIcon
                     icon={faAngleUp}
-                    className="mt-1 text-3xl md:text-4xl opacity-50 mb-6"
+                    className="mt-1 text-3xl md:text-4xl opacity-50 mb-2"
                     onClick={this.toggleBottomSheet.bind(this)}
                   />
                 )}
@@ -353,10 +353,10 @@ class App extends Component {
               <Slider ref={(slider) => (this.slider = slider)} {...settings}>
                 {cafe_list.map((cafe, index) => (
                   <div className="flex flex-col z-50 h-99 justify-center items-center text-center">
-                    <h3 className="text-gray-500 text-2xl items-center font-bold font-mono">
+                    <h3 className="text-gray-600 text-xl items-center font-bold font-mono">
                       {cafe.title}
                     </h3>
-                    <div className="flex text-center items-center justify-center mt-4">
+                    <div className="flex text-center items-center justify-center mt-3">
                       <img
                         className="h-56 w-56 md:w-96 md:h-96"
                         src={cafe.image}
@@ -385,11 +385,11 @@ class App extends Component {
                         />
                       </a>
                     </div>
-                    <div className="flex items-center -mt-2 text-gray-700 ml-5 md:ml-10">
+                    <div className="flex items-center -mt-4 text-gray-700 ml-5 md:ml-10">
                       <FontAwesomeIcon icon={faMap} />
                       <h1 className="px-2 text-sm">{cafe.address}</h1>
                     </div>
-                    <div className="flex items-center mt-4 text-gray-700 ml-5 md:ml-10">
+                    <div className="flex items-center mt-3 text-gray-700 ml-5 md:ml-10">
                       <FontAwesomeIcon icon={faPhone} />
                       <a
                         className="px-2 text-sm"
@@ -398,7 +398,7 @@ class App extends Component {
                         {cafe.phone_number}
                       </a>
                     </div>
-                    <div className="flex mt-4 text-gray-700 items-center ml-5 md:ml-10">
+                    <div className="flex mt-3 text-gray-700 items-center ml-5 md:ml-10">
                       <FontAwesomeIcon className="mr-2" icon={faClock} />
                       {cafe.check_time ? (
                         <p className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-green-800">
@@ -415,7 +415,7 @@ class App extends Component {
                       )}
                     </div>
 
-                    <div className="flex items-center mt-8 text-gray-700 ml-5 md:ml-10">
+                    <div className="flex items-center my-8 text-gray-700 ml-5 md:ml-10">
                       {[
                         cafe.no_straw,
                         cafe.no_plasticCup,
@@ -429,7 +429,7 @@ class App extends Component {
                       ].map((icon_data, index) =>
                         icon_data ? (
                           <img
-                            className="w-8 mr-2"
+                            className="w-8 mr-2 "
                             src={
                               require(`./assets/img/icon/icon-0${
                                 index + 2
@@ -439,17 +439,6 @@ class App extends Component {
                         ) : null
                       )}
                     </div>
-
-                    <p className="text-left leading-relaxed pt-5 break-words">
-                      {cafe.content.split("\n").map((line) => {
-                        return (
-                          <span>
-                            {line}
-                            <br />
-                          </span>
-                        );
-                      })}
-                    </p>
                   </div>
                 ))}
               </Slider>
