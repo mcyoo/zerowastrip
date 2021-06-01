@@ -8,11 +8,13 @@ import {
   faMap,
   faPhone,
   faClock,
+  faDirections,
 } from "@fortawesome/free-solid-svg-icons";
 import SwipeableBottomSheet from "react-swipeable-bottom-sheet";
 import "./assets/main.css";
 import pruncup_cafe from "./assets/img/pruncup_cafe.png";
 import youarehere from "./assets/img/youarehere.png";
+
 import Slider from "react-slick";
 import axios from "axios";
 import { faInstagram } from "@fortawesome/free-brands-svg-icons";
@@ -30,6 +32,7 @@ class App extends Component {
       open: false,
       open_search: false,
       cafe_list: [],
+      cafe_list_icon: [],
       cafe_num: 0,
       loading: true,
       map: null,
@@ -349,22 +352,40 @@ class App extends Component {
               </div>
               <Slider ref={(slider) => (this.slider = slider)} {...settings}>
                 {cafe_list.map((cafe, index) => (
-                  <div className="flex flex-col z-50 h-99 justify-center items-center text-center justify-center">
-                    <h3 className=" text-gray-800 text-xl items-center font-bold">
+                  <div className="flex flex-col z-50 h-99 justify-center items-center text-center">
+                    <h3 className="text-gray-500 text-2xl items-center font-bold font-mono">
                       {cafe.title}
                     </h3>
-                    <div className="flex items-center mt-4 text-gray-700 ml-5 md:ml-10">
-                      <FontAwesomeIcon className="text-xl" icon={faInstagram} />
-                      <a
-                        className="px-2 text-sm"
-                        href={
-                          "https://www.instagram.com/" + cafe.instagram.slice(1)
-                        }
-                      >
-                        {cafe.instagram}
+                    <div className="flex text-center items-center justify-center mt-4">
+                      <img
+                        className="h-56 w-56 md:w-96 md:h-96"
+                        src={cafe.image}
+                      />
+                    </div>
+                    <div className="flex items-center text-gray-700 ml-5 md:ml-10 justify-between">
+                      <div className="flex">
+                        <FontAwesomeIcon
+                          className="text-xl"
+                          icon={faInstagram}
+                        />
+                        <a
+                          className="px-2 text-sm"
+                          href={
+                            "https://www.instagram.com/" +
+                            cafe.instagram.slice(1)
+                          }
+                        >
+                          {cafe.instagram}
+                        </a>
+                      </div>
+                      <a href={cafe.kakaomap_url}>
+                        <FontAwesomeIcon
+                          className=" text-5xl text-blue-500 mr-10 mt-8"
+                          icon={faDirections}
+                        />
                       </a>
                     </div>
-                    <div className="flex items-center mt-4 text-gray-700 ml-5 md:ml-10">
+                    <div className="flex items-center -mt-2 text-gray-700 ml-5 md:ml-10">
                       <FontAwesomeIcon icon={faMap} />
                       <h1 className="px-2 text-sm">{cafe.address}</h1>
                     </div>
@@ -393,6 +414,32 @@ class App extends Component {
                         </p>
                       )}
                     </div>
+
+                    <div className="flex items-center mt-8 text-gray-700 ml-5 md:ml-10">
+                      {[
+                        cafe.no_straw,
+                        cafe.no_plasticCup,
+                        cafe.use_biodegradable,
+                        cafe.vegan,
+                        cafe.discount_pruncup,
+                        cafe.allow_pat,
+                        cafe.food,
+                        cafe.desert,
+                        cafe.pruncup_rental,
+                      ].map((icon_data, index) =>
+                        icon_data ? (
+                          <img
+                            className="w-8 mr-2"
+                            src={
+                              require(`./assets/img/icon/icon-0${
+                                index + 2
+                              }.png`).default
+                            }
+                          />
+                        ) : null
+                      )}
+                    </div>
+
                     <p className="text-left leading-relaxed pt-5 break-words">
                       {cafe.content.split("\n").map((line) => {
                         return (
@@ -403,12 +450,6 @@ class App extends Component {
                         );
                       })}
                     </p>
-                    <a
-                      className="px-24 py-4 bg-blue-500 rounded-md text-white text-lg focus:border-transparent"
-                      href={cafe.kakaomap_url}
-                    >
-                      찾아가기
-                    </a>
                   </div>
                 ))}
               </Slider>
