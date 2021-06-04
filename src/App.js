@@ -461,7 +461,7 @@ function SampleNextArrow(props) {
         ...style,
         zIndex: "60",
         marginRight: "30px",
-        borderRadius: "35px",
+        borderRadius: "40px",
         background: "black",
       }}
       onClick={onClick}
@@ -479,7 +479,7 @@ function SamplePrevArrow(props) {
         zIndex: "60",
         marginLeft: "30px",
         background: "black",
-        borderRadius: "35px",
+        borderRadius: "40px",
       }}
       onClick={onClick}
     />
