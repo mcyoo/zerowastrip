@@ -9,6 +9,7 @@ import {
   faPhone,
   faClock,
   faDirections,
+  faAngleRight,
 } from "@fortawesome/free-solid-svg-icons";
 import SwipeableBottomSheet from "react-swipeable-bottom-sheet";
 import "./assets/main.css";
@@ -220,6 +221,7 @@ class App extends Component {
       });
     };
   }
+
   render() {
     const { open, open_search, cafe_list, cafe_num } = this.state;
     const { handleInput } = this;
@@ -228,16 +230,17 @@ class App extends Component {
     });
 
     const settings = {
-      adaptiveHeight: true,
-      arrows: false,
+      adaptiveHeight: false,
+      arrows: true,
       dots: false,
       infinite: true,
-      speed: 700,
+      speed: 800,
       slidesToShow: 1,
       slidesToScroll: 1,
       swipeToSlide: true,
       initialSlide: cafe_num,
-
+      nextArrow: <SampleNextArrow />,
+      prevArrow: <SamplePrevArrow />,
       afterChange: (new_index) => {
         this.clickCafeSearchSheet(new_index);
       },
@@ -448,6 +451,39 @@ class App extends Component {
       </div>
     );
   }
+}
+function SampleNextArrow(props) {
+  const { className, style, onClick } = props;
+  return (
+    <div
+      className={className}
+      style={{
+        ...style,
+        zIndex: "60",
+        marginRight: "30px",
+        borderRadius: "35px",
+        background: "black",
+      }}
+      onClick={onClick}
+    ></div>
+  );
+}
+
+function SamplePrevArrow(props) {
+  const { className, style, onClick } = props;
+  return (
+    <div
+      className={className}
+      style={{
+        ...style,
+        zIndex: "60",
+        marginLeft: "30px",
+        background: "black",
+        borderRadius: "35px",
+      }}
+      onClick={onClick}
+    />
+  );
 }
 
 export default App;
