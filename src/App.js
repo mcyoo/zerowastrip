@@ -9,7 +9,7 @@ import {
   faPhone,
   faClock,
   faDirections,
-  faAngleRight,
+  faQuestionCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import SwipeableBottomSheet from "react-swipeable-bottom-sheet";
 import "./assets/main.css";
@@ -416,6 +416,11 @@ class App extends Component {
                           Close
                         </p>
                       )}
+                    </div>
+
+                    <div className="flex items-center mt-3 text-gray-700 ml-5 md:ml-10">
+                      <FontAwesomeIcon icon={faQuestionCircle} />
+                      <a className="px-2 text-sm">{cafe.name}</a>
                     </div>
 
                     <div className="flex items-center my-8 text-gray-700 ml-5 md:ml-10">
