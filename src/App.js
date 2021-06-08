@@ -359,9 +359,9 @@ class App extends Component {
                     <h3 className="text-gray-600 text-xl items-center font-bold font-mono">
                       {cafe.title}
                     </h3>
-                    <div className="flex text-center items-center justify-center mt-3">
+                    <div className="flex text-center items-center justify-center mt-2">
                       <img
-                        className="h-56 w-56 md:w-96 md:h-96"
+                        className="h-48 w-48 md:w-96 md:h-96"
                         src={cafe.image}
                       />
                     </div>
@@ -383,7 +383,7 @@ class App extends Component {
                       </div>
                       <a href={cafe.kakaomap_url}>
                         <FontAwesomeIcon
-                          className=" text-5xl text-blue-500 mr-10 mt-8"
+                          className=" text-5xl text-blue-500 mr-10 mt-6"
                           icon={faDirections}
                         />
                       </a>
@@ -392,7 +392,7 @@ class App extends Component {
                       <FontAwesomeIcon icon={faMap} />
                       <h1 className="px-2 text-sm">{cafe.address}</h1>
                     </div>
-                    <div className="flex items-center mt-3 text-gray-700 ml-5 md:ml-10">
+                    <div className="flex items-center mt-2 text-gray-700 ml-5 md:ml-10">
                       <FontAwesomeIcon icon={faPhone} />
                       <a
                         className="px-2 text-sm"
@@ -401,7 +401,7 @@ class App extends Component {
                         {cafe.phone_number}
                       </a>
                     </div>
-                    <div className="flex mt-3 text-gray-700 items-center ml-5 md:ml-10">
+                    <div className="flex mt-2 text-gray-700 items-center ml-5 md:ml-10">
                       <FontAwesomeIcon className="mr-2" icon={faClock} />
                       {cafe.check_time ? (
                         <p className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-green-800">
@@ -418,12 +418,12 @@ class App extends Component {
                       )}
                     </div>
 
-                    <div className="flex items-center mt-3 text-gray-700 ml-5 md:ml-10">
+                    <div className="flex items-center mt-2 text-gray-700 ml-5 md:ml-10">
                       <FontAwesomeIcon icon={faQuestionCircle} />
                       <a className="px-2 text-sm">{cafe.name}</a>
                     </div>
 
-                    <div className="flex items-center my-8 text-gray-700 ml-5 md:ml-10">
+                    <div className="flex items-center my-3 text-gray-700 ml-5 md:ml-10">
                       {[
                         cafe.no_straw,
                         cafe.no_plasticCup,
