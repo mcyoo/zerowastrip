@@ -140,6 +140,32 @@ class App extends Component {
   clickCafeSearchSheet(num) {
     this.openBottomSheet(true, num);
   }
+  get_user_position() {
+    var map = this.state.map;
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function (position) {
+        var lat = position.coords.latitude, // 위도
+          lon = position.coords.longitude; // 경도
+
+        var locPosition = new kakao.maps.LatLng(lat, lon); // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
+        var imageSrc = youarehere;
+        var imageSize = new kakao.maps.Size(36, 36);
+        var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+
+        // 마커를 생성합니다
+        var marker = new kakao.maps.Marker({
+          map: map, // 마커를 표시할 지도
+          position: locPosition, // 마커를 표시할 위치
+          image: markerImage, // 마커 이미지
+        });
+        map.setLevel(8);
+        map.panTo(locPosition);
+        marker.setMap(map);
+      });
+    } else {
+      alert("사용자 위치정보를 확인 할 수 없습니다.");
+    }
+  }
 
   getJson = async () => {
     const data = await axios
@@ -192,10 +218,8 @@ class App extends Component {
         this.setState({
           map: map,
         });
-        // 마커를 표시할 위치와 title 객체 배열입니다
-        // HTML5의 geolocation으로 사용할 수 있는지 확인합니다
+
         if (navigator.geolocation) {
-          // GeoLocation을 이용해서 접속 위치를 얻어옵니다
           navigator.geolocation.getCurrentPosition(function (position) {
             var lat = position.coords.latitude, // 위도
               lon = position.coords.longitude; // 경도
@@ -247,10 +271,36 @@ class App extends Component {
     };
     return (
       <div className="flex overflow-hidden overscroll-none w-screen h-screen z-0 main">
+        <div class="absolute bottom-14 right-5 md:bottom-20 md:right-10 z-10">
+          <button
+            onClick={() => this.get_user_position()}
+            class="p-0 w-10 h-10 md:w-20 md:h-20 bg-blue-200 rounded-full hover:bg-blue-200 active:shadow-lg mouse shadow transition ease-in duration-200 focus:outline-none"
+          >
+            <svg
+              version="1.0"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 100.000000 100.000000"
+              preserveAspectRatio="xMidYMid meet"
+              className="w-10 h-10 md:w-20 md:h-20"
+            >
+              {" "}
+              <g
+                transform="translate(0.000000,100.000000) scale(0.100000,-0.100000)"
+                fill="#000000"
+                stroke="none"
+              >
+                {" "}
+                <path d="M406 890 c-63 -16 -153 -70 -197 -117 -22 -24 -55 -74 -72 -111 -29 -61 -32 -76 -32 -163 0 -90 2 -99 37 -171 45 -91 103 -147 196 -191 61 -29 76 -32 162 -32 86 0 101 3 162 32 93 44 151 100 196 191 35 72 37 81 37 172 0 91 -2 100 -37 172 -68 136 -188 217 -336 224 -42 2 -94 -1 -116 -6z m237 -90 c61 -29 127 -95 158 -157 20 -40 24 -63 24 -143 0 -112 -20 -164 -91 -234 -70 -71 -122 -91 -234 -91 -80 0 -103 4 -143 24 -61 30 -129 97 -157 157 -28 56 -37 164 -21 231 25 101 115 197 215 229 62 21 190 13 249 -16z m-401 -52 c-23 -23 -51 -60 -62 -82 -11 -23 -20 -34 -20 -25 0 30 91 149 113 149 6 0 -9 -19 -31 -42z m553 -25 c19 -25 35 -50 35 -55 0 -5 -16 12 -37 38 -20 27 -46 57 -57 67 l-21 18 22 -11 c12 -6 38 -31 58 -57z m52 -115 c-3 -7 -5 -2 -5 12 0 14 2 19 5 13 2 -7 2 -19 0 -25z m0 -240 c-3 -8 -6 -5 -6 6 -1 11 2 17 5 13 3 -3 4 -12 1 -19z m-600 -126 c24 -24 35 -39 26 -33 -40 21 -113 119 -113 151 0 8 10 -5 22 -30 13 -25 42 -64 65 -88z m571 66 c-19 -33 -70 -88 -93 -100 -11 -5 -6 2 12 16 17 14 44 46 59 70 29 46 46 57 22 14z"></path>{" "}
+                <path d="M470 615 c-85 -30 -159 -60 -164 -69 -16 -25 11 -44 88 -62 l73 -17 17 -73 c19 -78 37 -104 63 -88 13 8 65 147 118 315 5 16 -18 50 -33 48 -4 0 -77 -25 -162 -54z m160 2 c0 -24 -87 -272 -95 -272 -4 0 -16 28 -25 62 -22 80 -30 89 -93 103 -29 7 -58 16 -64 19 -7 4 40 24 105 45 64 21 120 41 124 45 13 12 48 10 48 -2z"></path>{" "}
+              </g>{" "}
+            </svg>
+          </button>
+        </div>
         <div
           id="Mymap"
           className="w-screen h-93 z-0 overflow-hidden overscroll-none"
         ></div>
+
         {open ? null : (
           <>
             <div className="flex justify-center md:justify-start fixed container z-30">
@@ -300,7 +350,7 @@ class App extends Component {
                             <div className="ml-2 flex-shrink-0 flex">
                               {cafe.check_time ? (
                                 <p className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-green-800">
-                                  오픈확인
+                                  자세히 확인
                                 </p>
                               ) : cafe.cafe_open ? (
                                 <p className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
@@ -402,20 +452,8 @@ class App extends Component {
                       </a>
                     </div>
                     <div className="flex mt-2 text-gray-700 items-center ml-5 md:ml-10">
-                      <FontAwesomeIcon className="mr-2" icon={faClock} />
-                      {cafe.check_time ? (
-                        <p className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-green-800">
-                          오픈확인
-                        </p>
-                      ) : cafe.cafe_open ? (
-                        <p className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                          Open
-                        </p>
-                      ) : (
-                        <p className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-                          Close
-                        </p>
-                      )}
+                      <FontAwesomeIcon icon={faClock} />
+                      <a className="px-2 text-sm">{cafe.content}</a>
                     </div>
 
                     <div className="flex items-center mt-2 text-gray-700 ml-5 md:ml-10">
