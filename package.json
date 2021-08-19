@@ -32,7 +32,7 @@
     "eject": "react-scripts eject",
     "build:css": "postcss src/assets/tailwind.css -o src/assets/main.css",
     "watch:css": "postcss src/assets/tailwind.css -o src/assets/main.css",
-    "deploy": "gh-pages -d build",
+    "deploy": "gh-pages-clean && gh-pages -d build",
     "predeploy": "npm run build"
   },
   "homepage": "https://mcyoo.github.io/zerowastrip",

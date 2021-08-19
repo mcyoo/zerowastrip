@@ -171,6 +171,7 @@ class App extends Component {
       "제레미",
       "소로소로",
       "픽스커피 공단점",
+      "인더그린"
     ];
 
     for (var i = 0; i < positions.length; i++) {
@@ -246,7 +247,7 @@ class App extends Component {
     };
     return (
       <div className="flex overflow-hidden overscroll-none w-screen h-screen z-20 main">
-        <div className="absolute bottom-6 right-5 z-10">
+        <div className="absolute bottom-36 md:bottom-16 right-5 z-10">
           <button
             onClick={() => this.get_user_position()}
             className="p-2 w-10 h-10 md:w-16 md:h-16 bg-blue-200 rounded-full hover:bg-blue-100 active:shadow-lg mouse shadow transition ease-in duration-200 focus:outline-none"
