@@ -94,7 +94,7 @@ class App extends Component {
         var imageSrc = pruncup_cafe;
 
         // 마커 이미지의 이미지 크기 입니다
-        var imageSize = new kakao.maps.Size(43, 65);
+        var imageSize = new kakao.maps.Size(31, 50);
 
         // 마커 이미지를 생성합니다
         var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
@@ -270,7 +270,7 @@ class App extends Component {
       },
     };
     return (
-      <div className="flex overflow-hidden overscroll-none w-screen h-screen z-0 main">
+      <div className="flex overflow-hidden overscroll-none w-screen h-screen z-20 main">
         <div class="absolute bottom-14 right-5 md:bottom-20 md:right-10 z-10">
           <button
             onClick={() => this.get_user_position()}
