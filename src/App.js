@@ -10,21 +10,23 @@ import {
   faClock,
   faDirections,
   faQuestionCircle,
+  faAngleRight,
+  faMapPin,
 } from "@fortawesome/free-solid-svg-icons";
 import SwipeableBottomSheet from "react-swipeable-bottom-sheet";
 import "./assets/main.css";
 import pruncup_cafe from "./assets/img/pruncup_cafe.png";
-import youarehere from "./assets/img/youarehere.png";
+import rental_cafe from "./assets/img/rental_cafe.png";
+import youarehere from "./assets/img/smile_icon.png";
 
 import Slider from "react-slick";
 import axios from "axios";
 import { faInstagram } from "@fortawesome/free-brands-svg-icons";
 
 /*global kakao*/
-
-var temp = 0;
 const map_level = 5;
 const panTo_latlngX = 0.009;
+let update_defence = true;
 class App extends Component {
   constructor(props) {
     super(props);
@@ -41,90 +43,23 @@ class App extends Component {
     };
   }
 
-  // SearchBox 에 props로 넘겨줄 handleChange 메소드 정의
-  handleInput = (e) => {
-    this.setState({
-      userInput: e.target.value,
-    });
-  };
-
   openBottomSheet(open, num = this.state.cafe_num) {
+    const map = this.state.map;
     this.setState({ open, open_search: false, cafe_num: num });
+
     var panTo_latlngX_default = 0;
     if (open === true) {
       panTo_latlngX_default = panTo_latlngX;
     }
-    const script = document.createElement("script");
-    script.async = true;
-    script.src =
-      "//dapi.kakao.com/v2/maps/sdk.js?appkey=9fcfc5ba629ae84b1930d4ba4e458ccb&libraries=services,clusterer&autoload=false";
-    document.head.appendChild(script);
 
-    const map = this.state.map;
-    script.onload = () => {
-      kakao.maps.load(() => {
-        var moveLatLon = new kakao.maps.LatLng(
-          this.state.cafe_list[num].lat - panTo_latlngX_default,
-          this.state.cafe_list[num].lng
-        );
-        map.setLevel(map_level);
-        map.panTo(moveLatLon);
-      });
-    };
-  }
-
-  cafeSetMap() {
-    const script = document.createElement("script");
-    script.async = true;
-    script.src =
-      "//dapi.kakao.com/v2/maps/sdk.js?appkey=9fcfc5ba629ae84b1930d4ba4e458ccb&libraries=services,clusterer&autoload=false";
-    document.head.appendChild(script);
-
-    const map = this.state.map;
-    const positions = this.state.cafe_list;
-
-    script.onload = () => {
-      kakao.maps.load(() => {
-        function panTo(x, y) {
-          var moveLatLon = new kakao.maps.LatLng(x, y);
-          map.panTo(moveLatLon);
-        }
-
-        // 마커 이미지의 이미지 주소입니다
-        var imageSrc = pruncup_cafe;
-
-        // 마커 이미지의 이미지 크기 입니다
-        var imageSize = new kakao.maps.Size(31, 50);
-
-        // 마커 이미지를 생성합니다
-        var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
-
-        for (var i = 0; i < positions.length; i++) {
-          // 마커를 생성합니다
-          var marker = new kakao.maps.Marker({
-            map: map, // 마커를 표시할 지도
-            position: new kakao.maps.LatLng(positions[i].lat, positions[i].lng), // 마커를 표시할 위치
-            title: positions[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
-            image: markerImage, // 마커 이미지
-          });
-          // 마커에 클릭이벤트를 등록합니다
-          kakao.maps.event.addListener(
-            marker,
-            "click",
-            makeOverListener(map, positions[i], this, i)
-          );
-          // 인포윈도우를 표시하는 클로저를 만드는 함수입니다
-          function makeOverListener(map, cafe_data, react_function, num) {
-            return function () {
-              map.setLevel(map_level);
-              panTo(cafe_data.lat - panTo_latlngX, cafe_data.lng);
-              react_function.setState({ open: true, cafe_num: num });
-              react_function.slider.slickGoTo(num, true);
-            };
-          }
-        }
-      });
-    };
+    kakao.maps.load(() => {
+      var moveLatLon = new kakao.maps.LatLng(
+        this.state.cafe_list[num].lat - panTo_latlngX_default,
+        this.state.cafe_list[num].lng
+      );
+      map.setLevel(map_level);
+      map.panTo(moveLatLon);
+    });
   }
 
   toggleBottomSheet() {
@@ -140,6 +75,7 @@ class App extends Component {
   clickCafeSearchSheet(num) {
     this.openBottomSheet(true, num);
   }
+
   get_user_position() {
     var map = this.state.map;
     if (navigator.geolocation) {
@@ -193,62 +129,101 @@ class App extends Component {
     });
   };
 
-  componentDidUpdate() {
-    if (temp < 2) {
-      this.cafeSetMap();
-      temp++;
+  setMap = () => {
+    kakao.maps.load(() => {
+      let container = document.getElementById("Mymap");
+      let options = {
+        center: new kakao.maps.LatLng(33.371776, 126.543786),
+        level: 10,
+      };
+      const map = new window.kakao.maps.Map(container, options);
+      this.setState({
+        map: map,
+      });
+    });
+  };
+
+  setCafe = () => {
+    const positions = this.state.cafe_list;
+    const map = this.state.map;
+
+    function panTo(x, y) {
+      var moveLatLon = new kakao.maps.LatLng(x, y);
+      map.panTo(moveLatLon);
     }
-  }
+
+    // 마커 이미지의 이미지 주소입니다
+    var imageSrc = pruncup_cafe;
+    var imageSrc_rental = rental_cafe;
+
+    // 마커 이미지의 이미지 크기 입니다
+    var imageSize = new kakao.maps.Size(31, 50);
+
+    // 마커 이미지를 생성합니다
+    var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+    var markerImage_rental = new kakao.maps.MarkerImage(
+      imageSrc_rental,
+      imageSize
+    );
+    var array_rental_cafe = [
+      "카페 제주소녀",
+      "화순별곡",
+      "제레미",
+      "소로소로",
+      "픽스커피 공단점",
+    ];
+
+    for (var i = 0; i < positions.length; i++) {
+      // 대여소
+      if (array_rental_cafe.includes(positions[i].title)) {
+        var marker = new kakao.maps.Marker({
+          map: map, // 마커를 표시할 지도
+          position: new kakao.maps.LatLng(positions[i].lat, positions[i].lng), // 마커를 표시할 위치
+          title: positions[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+          image: markerImage_rental, // 마커 이미지
+        });
+      } else {
+        var marker = new kakao.maps.Marker({
+          map: map, // 마커를 표시할 지도
+          position: new kakao.maps.LatLng(positions[i].lat, positions[i].lng), // 마커를 표시할 위치
+          title: positions[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+          image: markerImage, // 마커 이미지
+        });
+      }
+      // 마커에 클릭이벤트를 등록합니다
+      kakao.maps.event.addListener(
+        marker,
+        "click",
+        makeOverListener(map, positions[i], this, i)
+      );
+      // 인포윈도우를 표시하는 클로저를 만드는 함수입니다
+      function makeOverListener(map, cafe_data, react_function, num) {
+        return function () {
+          map.setLevel(map_level);
+          panTo(cafe_data.lat - panTo_latlngX, cafe_data.lng);
+          react_function.setState({ open: true, cafe_num: num });
+          react_function.slider.slickGoTo(num, true);
+        };
+      }
+    }
+  };
+
   componentDidMount() {
     this.getData();
-    const script = document.createElement("script");
-    script.async = true;
-    script.src =
-      "//dapi.kakao.com/v2/maps/sdk.js?appkey=9fcfc5ba629ae84b1930d4ba4e458ccb&libraries=services,clusterer&autoload=false";
-    document.head.appendChild(script);
+    this.setMap();
+  }
 
-    script.onload = () => {
-      kakao.maps.load(() => {
-        let container = document.getElementById("Mymap");
-        let options = {
-          center: new kakao.maps.LatLng(33.371776, 126.543786),
-          level: 10,
-        };
-        const map = new window.kakao.maps.Map(container, options);
-        this.setState({
-          map: map,
-        });
-
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(function (position) {
-            var lat = position.coords.latitude, // 위도
-              lon = position.coords.longitude; // 경도
-
-            var locPosition = new kakao.maps.LatLng(lat, lon); // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
-            var imageSrc = youarehere;
-            var imageSize = new kakao.maps.Size(36, 36);
-            var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
-
-            // 마커를 생성합니다
-            var marker = new kakao.maps.Marker({
-              map: map, // 마커를 표시할 지도
-              position: locPosition, // 마커를 표시할 위치
-              image: markerImage, // 마커 이미지
-            });
-            map.setLevel(8);
-            map.panTo(locPosition);
-            marker.setMap(map);
-          });
-        } else {
-          alert("사용자 위치정보를 확인 할 수 없습니다.");
-        }
-      });
-    };
+  componentDidUpdate() {
+    if (update_defence === true) {
+      if (this.state.loading === false) {
+        this.setCafe();
+        update_defence = false;
+      }
+    }
   }
 
   render() {
     const { open, open_search, cafe_list, cafe_num } = this.state;
-    const { handleInput } = this;
     const filteredCafe = this.state.cafe_list.filter((cafe) => {
       return cafe.title.toLowerCase().includes(this.state.userInput);
     });
@@ -271,29 +246,12 @@ class App extends Component {
     };
     return (
       <div className="flex overflow-hidden overscroll-none w-screen h-screen z-20 main">
-        <div class="absolute bottom-14 right-5 md:bottom-20 md:right-10 z-10">
+        <div className="absolute bottom-6 right-5 z-10">
           <button
             onClick={() => this.get_user_position()}
-            class="p-0 w-10 h-10 md:w-20 md:h-20 bg-blue-200 rounded-full hover:bg-blue-200 active:shadow-lg mouse shadow transition ease-in duration-200 focus:outline-none"
+            className="p-2 w-10 h-10 md:w-16 md:h-16 bg-blue-200 rounded-full hover:bg-blue-100 active:shadow-lg mouse shadow transition ease-in duration-200 focus:outline-none"
           >
-            <svg
-              version="1.0"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 100.000000 100.000000"
-              preserveAspectRatio="xMidYMid meet"
-              className="w-10 h-10 md:w-20 md:h-20"
-            >
-              {" "}
-              <g
-                transform="translate(0.000000,100.000000) scale(0.100000,-0.100000)"
-                fill="#000000"
-                stroke="none"
-              >
-                {" "}
-                <path d="M406 890 c-63 -16 -153 -70 -197 -117 -22 -24 -55 -74 -72 -111 -29 -61 -32 -76 -32 -163 0 -90 2 -99 37 -171 45 -91 103 -147 196 -191 61 -29 76 -32 162 -32 86 0 101 3 162 32 93 44 151 100 196 191 35 72 37 81 37 172 0 91 -2 100 -37 172 -68 136 -188 217 -336 224 -42 2 -94 -1 -116 -6z m237 -90 c61 -29 127 -95 158 -157 20 -40 24 -63 24 -143 0 -112 -20 -164 -91 -234 -70 -71 -122 -91 -234 -91 -80 0 -103 4 -143 24 -61 30 -129 97 -157 157 -28 56 -37 164 -21 231 25 101 115 197 215 229 62 21 190 13 249 -16z m-401 -52 c-23 -23 -51 -60 -62 -82 -11 -23 -20 -34 -20 -25 0 30 91 149 113 149 6 0 -9 -19 -31 -42z m553 -25 c19 -25 35 -50 35 -55 0 -5 -16 12 -37 38 -20 27 -46 57 -57 67 l-21 18 22 -11 c12 -6 38 -31 58 -57z m52 -115 c-3 -7 -5 -2 -5 12 0 14 2 19 5 13 2 -7 2 -19 0 -25z m0 -240 c-3 -8 -6 -5 -6 6 -1 11 2 17 5 13 3 -3 4 -12 1 -19z m-600 -126 c24 -24 35 -39 26 -33 -40 21 -113 119 -113 151 0 8 10 -5 22 -30 13 -25 42 -64 65 -88z m571 66 c-19 -33 -70 -88 -93 -100 -11 -5 -6 2 12 16 17 14 44 46 59 70 29 46 46 57 22 14z"></path>{" "}
-                <path d="M470 615 c-85 -30 -159 -60 -164 -69 -16 -25 11 -44 88 -62 l73 -17 17 -73 c19 -78 37 -104 63 -88 13 8 65 147 118 315 5 16 -18 50 -33 48 -4 0 -77 -25 -162 -54z m160 2 c0 -24 -87 -272 -95 -272 -4 0 -16 28 -25 62 -22 80 -30 89 -93 103 -29 7 -58 16 -64 19 -7 4 40 24 105 45 64 21 120 41 124 45 13 12 48 10 48 -2z"></path>{" "}
-              </g>{" "}
-            </svg>
+            <FontAwesomeIcon icon={faMapPin} className="md:w-24" />
           </button>
         </div>
         <div
@@ -413,6 +371,7 @@ class App extends Component {
                       <img
                         className="h-48 w-48 md:w-96 md:h-96"
                         src={cafe.image}
+                        key={cafe.title}
                       />
                     </div>
                     <div className="flex items-center text-gray-700 ml-5 md:ml-10 justify-between">
@@ -481,6 +440,7 @@ class App extends Component {
                                 index + 2
                               }.png`).default
                             }
+                            key={`icon-0"${index + 2}`}
                           />
                         ) : null
                       )}
@@ -496,34 +456,22 @@ class App extends Component {
   }
 }
 function SampleNextArrow(props) {
-  const { className, style, onClick } = props;
+  const { onClick } = props;
   return (
-    <div
-      className={className}
-      style={{
-        ...style,
-        zIndex: "60",
-        marginRight: "30px",
-        borderRadius: "40px",
-        background: "black",
-      }}
+    <FontAwesomeIcon
+      icon={faAngleRight}
+      className="text-3xl md:text-4xl opacity-50 absolute top-52 right-3"
       onClick={onClick}
-    ></div>
+    />
   );
 }
 
 function SamplePrevArrow(props) {
-  const { className, style, onClick } = props;
+  const { onClick } = props;
   return (
-    <div
-      className={className}
-      style={{
-        ...style,
-        zIndex: "60",
-        marginLeft: "30px",
-        background: "black",
-        borderRadius: "40px",
-      }}
+    <FontAwesomeIcon
+      icon={faAngleLeft}
+      className="text-3xl md:text-4xl opacity-50 absolute top-52 left-3"
       onClick={onClick}
     />
   );
@@ -533,19 +481,19 @@ export default App;
 
 /*
  <li>
-                    <a class="block hover:bg-gray-50">
-                      <div class="px-4 py-4 sm:px-6">
-                        <div class="flex items-center justify-between">
-                          <p class="text-sm font-thin text-gray-700 truncate"></p>
-                          <div class="ml-2 flex-shrink-0 flex">
-                            <p class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                    <a className="block hover:bg-gray-50">
+                      <div className="px-4 py-4 sm:px-6">
+                        <div className="flex items-center justify-between">
+                          <p className="text-sm font-thin text-gray-700 truncate"></p>
+                          <div className="ml-2 flex-shrink-0 flex">
+                            <p className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
                               마감
                             </p>
                           </div>
                         </div>
-                        <div class="mt-2 sm:flex sm:justify-between">
-                          <div class="sm:flex">
-                            <p class="flex items-center text-lg font-light text-gray-500">
+                        <div className="mt-2 sm:flex sm:justify-between">
+                          <div className="sm:flex">
+                            <p className="flex items-center text-lg font-light text-gray-500">
                               카페스물다섯
                             </p>
                           </div>
