@@ -173,7 +173,8 @@ class App extends Component {
       "픽스커피 공단점",
       "인더그린",
       "버터행성706",
-      "죠지트럭커피"
+      "죠지트럭커피",
+      "발트글라스"
     ];
 
     for (var i = 0; i < positions.length; i++) {
