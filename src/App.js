@@ -18,7 +18,7 @@ import "./assets/main.css";
 import pruncup_cafe from "./assets/img/pruncup_cafe.png";
 import rental_cafe from "./assets/img/rental_cafe.png";
 import youarehere from "./assets/img/smile_icon.png";
-
+import eco_place from "./assets/img/eco_place.png";
 import Slider from "react-slick";
 import axios from "axios";
 import { faInstagram } from "@fortawesome/free-brands-svg-icons";
@@ -134,7 +134,7 @@ class App extends Component {
       let container = document.getElementById("Mymap");
       let options = {
         center: new kakao.maps.LatLng(33.371776, 126.543786),
-        level: 10,
+        level: 9,
       };
       const map = new window.kakao.maps.Map(container, options);
       this.setState({
@@ -155,15 +155,21 @@ class App extends Component {
     // 마커 이미지의 이미지 주소입니다
     var imageSrc = pruncup_cafe;
     var imageSrc_rental = rental_cafe;
+    var imageSrc_eco = eco_place;
 
     // 마커 이미지의 이미지 크기 입니다
-    var imageSize = new kakao.maps.Size(31, 50);
+    var imageSize = new kakao.maps.Size(25, 40);
+    var imageSize_eco = new kakao.maps.Size(20, 20);
 
     // 마커 이미지를 생성합니다
     var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
     var markerImage_rental = new kakao.maps.MarkerImage(
       imageSrc_rental,
       imageSize
+    );
+    var markerImage_eco = new kakao.maps.MarkerImage(
+      imageSrc_eco,
+      imageSize_eco
     );
     var array_rental_cafe = [
       "카페 제주소녀",
@@ -175,7 +181,16 @@ class App extends Component {
       "버터행성706",
       "죠지트럭커피",
       "발트글라스",
-      "제주동네"
+      "제주동네",
+    ];
+    var array_eco_place = [
+      "핸드메이드라이프",
+      "꽃마리 리필스토어",
+      "올바른농민상회",
+      "지구별가게",
+      "벨아벨지구생각작업실",
+      "제주용기",
+      "마이아일랜드",
     ];
 
     for (var i = 0; i < positions.length; i++) {
@@ -186,6 +201,13 @@ class App extends Component {
           position: new kakao.maps.LatLng(positions[i].lat, positions[i].lng), // 마커를 표시할 위치
           title: positions[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
           image: markerImage_rental, // 마커 이미지
+        });
+      } else if (array_eco_place.includes(positions[i].title)) {
+        var marker = new kakao.maps.Marker({
+          map: map, // 마커를 표시할 지도
+          position: new kakao.maps.LatLng(positions[i].lat, positions[i].lng), // 마커를 표시할 위치
+          title: positions[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+          image: markerImage_eco, // 마커 이미지
         });
       } else {
         var marker = new kakao.maps.Marker({
@@ -251,14 +273,41 @@ class App extends Component {
     };
     return (
       <div className="flex overflow-hidden overscroll-none w-screen h-screen z-20 main">
-        <div className="absolute bottom-36 md:bottom-16 right-5 z-10">
+        <div className="absolute bottom-36 md:bottom-20 right-6 z-10">
           <button
             onClick={() => this.get_user_position()}
             className="p-2 w-10 h-10 md:w-16 md:h-16 bg-blue-200 rounded-full hover:bg-blue-100 active:shadow-lg mouse shadow transition ease-in duration-200 focus:outline-none"
           >
-            <FontAwesomeIcon icon={faMapPin} className="md:w-24" />
+            <FontAwesomeIcon icon={faMapPin} className="md:text-2xl" />
           </button>
         </div>
+        {open ? null : (
+          <div className="absolute top-16 md:top-28 z-10 flex flex-col space-y-1 md:space-y-3 font-medium">
+            <div className="flex items-center">
+              <img
+                src={pruncup_cafe}
+                className="w-6 ml-8 md:ml-10 md:w-8"
+              ></img>
+              <div className="text-sm text-gray-800 md:text-md ml-2">
+                참여 카페
+              </div>
+            </div>
+
+            <div className="flex items-center">
+              <img src={rental_cafe} className="w-6 ml-8 md:ml-10 md:w-8"></img>
+              <div className="text-sm text-gray-800 md:text-md ml-2">
+                푸른컵 대여소
+              </div>
+            </div>
+
+            <div className="flex items-center">
+              <img src={eco_place} className="w-6 ml-8 md:ml-10 md:w-8"></img>
+              <div className="text-sm text-gray-800 md:text-md ml-2">
+                친환경 매장
+              </div>
+            </div>
+          </div>
+        )}
         <div
           id="Mymap"
           className="w-screen h-93 z-0 overflow-hidden overscroll-none"
@@ -267,27 +316,37 @@ class App extends Component {
         {open ? null : (
           <>
             <div className="flex justify-center md:justify-start fixed container z-30">
-              <input
-                className="w-10/12 border mt-5 pl-12 font-medium text-gray-900 placeholder-gray-400 py-3 md:py-3 rounded-md focus:outline-none md:ml-10 md:mt-10 md:w-1/3"
-                name="cafe"
-                type="search"
-                placeholder="참여카페 찾기"
-                onChange={this.handleInput}
-                onClick={this.openInputSheet.bind(this)}
-              />
+              {open_search ? (
+                <input
+                  className="w-10/12 mt-5 border pl-10 text-gray-800 placeholder-gray-400 py-2 rounded-md focus:outline-none md:ml-10 md:mt-10 md:w-1/3 text-sm"
+                  name="cafe"
+                  type="search"
+                  placeholder="참여카페 찾기"
+                  onChange={this.handleInput}
+                  onClick={this.closeInputSheet.bind(this)}
+                  readOnly
+                />
+              ) : (
+                <input
+                  className="w-10/12 mt-5 border pl-10 text-gray-800 placeholder-gray-400 py-2 rounded-md focus:outline-none md:ml-10 md:mt-10 md:w-1/3 text-sm"
+                  name="cafe"
+                  type="search"
+                  placeholder="참여카페 찾기"
+                  onChange={this.handleInput}
+                  onClick={this.openInputSheet.bind(this)}
+                  readOnly
+                />
+              )}
             </div>
             {open_search ? (
               <div className="flex justify-start fixed container z-30">
-                <div
-                  className="fixed flex z-30 mt-8 md:mt-12 ml-14 text-3xl w-12 h-12"
-                  onClick={this.closeInputSheet.bind(this)}
-                >
+                <div className="fixed flex z-30 mt-8 ml-12 md:mt-11 text-lg md:text-3xl">
                   <FontAwesomeIcon icon={faAngleLeft} />
                 </div>
               </div>
             ) : (
               <div className="flex justify-start fixed container z-30">
-                <div className="fixed flex z-30 mt-9 md:mt-14 ml-14 text-lg">
+                <div className="fixed flex z-30 mt-8 md:mt-12 ml-12 text-sm md:text-xl">
                   <FontAwesomeIcon icon={faSearch} />
                 </div>
               </div>
@@ -296,7 +355,7 @@ class App extends Component {
         )}
         {open_search ? (
           <>
-            <div className="w-screen h-screen z-20 fixed bg-white overflow-auto py-24">
+            <div className="w-screen h-screen z-20 fixed bg-white overflow-auto py-32">
               <div className="bg-white shadow sm:rounded-md overflow-auto">
                 <ul className="divide-y divide-gray-200">
                   {filteredCafe.map((cafe, index) => (
@@ -344,7 +403,7 @@ class App extends Component {
         ) : (
           <>
             <SwipeableBottomSheet
-              overflowHeight={46}
+              overflowHeight={36}
               shadowTip={false}
               topShadow={false}
               open={open}
@@ -355,13 +414,13 @@ class App extends Component {
                 {open ? (
                   <FontAwesomeIcon
                     icon={faAngleDown}
-                    className="mt-1 text-3xl md:text-4xl opacity-50 mb-2"
+                    className="mt-1 text-2xl md:text-4xl opacity-50 mb-2"
                     onClick={this.toggleBottomSheet.bind(this)}
                   />
                 ) : (
                   <FontAwesomeIcon
                     icon={faAngleUp}
-                    className="mt-1 text-3xl md:text-4xl opacity-50 mb-2"
+                    className="mt-1 text-2xl md:text-4xl opacity-50 mb-2"
                     onClick={this.toggleBottomSheet.bind(this)}
                   />
                 )}
