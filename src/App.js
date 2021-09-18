@@ -192,25 +192,25 @@ class App extends Component {
       "제주용기",
       "마이아일랜드",
     ];
-
+    var marker = "";
     for (var i = 0; i < positions.length; i++) {
       // 대여소
       if (array_rental_cafe.includes(positions[i].title)) {
-        var marker = new kakao.maps.Marker({
+        marker = new kakao.maps.Marker({
           map: map, // 마커를 표시할 지도
           position: new kakao.maps.LatLng(positions[i].lat, positions[i].lng), // 마커를 표시할 위치
           title: positions[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
           image: markerImage_rental, // 마커 이미지
         });
       } else if (array_eco_place.includes(positions[i].title)) {
-        var marker = new kakao.maps.Marker({
+        marker = new kakao.maps.Marker({
           map: map, // 마커를 표시할 지도
           position: new kakao.maps.LatLng(positions[i].lat, positions[i].lng), // 마커를 표시할 위치
           title: positions[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
           image: markerImage_eco, // 마커 이미지
         });
       } else {
-        var marker = new kakao.maps.Marker({
+        marker = new kakao.maps.Marker({
           map: map, // 마커를 표시할 지도
           position: new kakao.maps.LatLng(positions[i].lat, positions[i].lng), // 마커를 표시할 위치
           title: positions[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
@@ -287,6 +287,7 @@ class App extends Component {
               <img
                 src={pruncup_cafe}
                 className="w-6 ml-8 md:ml-10 md:w-8"
+                alt="pruncup_cafe"
               ></img>
               <div className="text-sm text-gray-800 md:text-md ml-2">
                 참여 카페
@@ -294,14 +295,22 @@ class App extends Component {
             </div>
 
             <div className="flex items-center">
-              <img src={rental_cafe} className="w-6 ml-8 md:ml-10 md:w-8"></img>
+              <img
+                src={rental_cafe}
+                className="w-6 ml-8 md:ml-10 md:w-8"
+                alt="rental_cafe"
+              ></img>
               <div className="text-sm text-gray-800 md:text-md ml-2">
                 푸른컵 대여소
               </div>
             </div>
 
             <div className="flex items-center">
-              <img src={eco_place} className="w-6 ml-8 md:ml-10 md:w-8"></img>
+              <img
+                src={eco_place}
+                className="w-6 ml-8 md:ml-10 md:w-8"
+                alt="eco_place"
+              ></img>
               <div className="text-sm text-gray-800 md:text-md ml-2">
                 친환경 매장
               </div>
@@ -360,7 +369,7 @@ class App extends Component {
                 <ul className="divide-y divide-gray-200">
                   {filteredCafe.map((cafe, index) => (
                     <li>
-                      <a
+                      <button
                         className="block hover:bg-gray-50"
                         onClick={() => this.clickCafeSearchSheet(cafe.id - 1)}
                       >
@@ -393,7 +402,7 @@ class App extends Component {
                             </div>
                           </div>
                         </div>
-                      </a>
+                      </button>
                     </li>
                   ))}
                 </ul>
@@ -403,7 +412,7 @@ class App extends Component {
         ) : (
           <>
             <SwipeableBottomSheet
-              overflowHeight={36}
+              overflowHeight={40}
               shadowTip={false}
               topShadow={false}
               open={open}
@@ -427,87 +436,105 @@ class App extends Component {
               </div>
               <Slider ref={(slider) => (this.slider = slider)} {...settings}>
                 {cafe_list.map((cafe, index) => (
-                  <div className="flex flex-col z-50 h-99 justify-center items-center text-center">
-                    <h3 className="text-gray-600 text-xl items-center font-bold font-mono">
-                      {cafe.title}
-                    </h3>
-                    <div className="flex text-center items-center justify-center mt-2">
-                      <img
-                        className="h-48 w-48 md:w-96 md:h-96"
-                        src={cafe.image}
-                        key={cafe.title}
-                      />
-                    </div>
-                    <div className="flex items-center text-gray-700 ml-5 md:ml-10 justify-between">
-                      <div className="flex">
-                        <FontAwesomeIcon
-                          className="text-xl"
-                          icon={faInstagram}
-                        />
-                        <a
-                          className="px-2 text-sm"
-                          href={
-                            "https://www.instagram.com/" +
-                            cafe.instagram.slice(1)
-                          }
-                        >
-                          {cafe.instagram}
-                        </a>
+                  <div className="w-screen overflow-x-hidden" key={index}>
+                    <div className="pt-0">
+                      <div className="px-2">
+                        <div className="max-w-md mx-auto shadow-lg rounded-md overflow-hidden md:max-w-2xl">
+                          <div className="flex">
+                            <div className="w-full">
+                              <div className="flex justify-center items-center">
+                                <div className="flex flex-row items-center text-center mb-4">
+                                  <h3 className="text-gray-600 text-xl items-center font-bold font-mono">
+                                    {cafe.title}
+                                  </h3>
+                                </div>
+                              </div>
+                              <div className="flex justify-center items-center">
+                                <img
+                                  className="h-48 w-48 md:w-96 md:h-96"
+                                  src={cafe.image}
+                                  key={cafe.title}
+                                  alt="cafe_image"
+                                />
+                              </div>
+                              <div className="flex items-center text-gray-700 ml-5 md:ml-10 justify-between">
+                                <div className="flex">
+                                  <FontAwesomeIcon
+                                    className="text-xl"
+                                    icon={faInstagram}
+                                  />
+                                  <a
+                                    className="px-2 text-sm"
+                                    href={
+                                      "https://www.instagram.com/" +
+                                      cafe.instagram.slice(1)
+                                    }
+                                  >
+                                    {cafe.instagram}
+                                  </a>
+                                </div>
+                                <a href={cafe.kakaomap_url}>
+                                  <FontAwesomeIcon
+                                    className=" text-5xl text-blue-500 mr-10 mt-6"
+                                    icon={faDirections}
+                                  />
+                                </a>
+                              </div>
+                              <div className="flex items-center -mt-4 text-gray-700 ml-5 md:ml-10">
+                                <FontAwesomeIcon icon={faMap} />
+                                <h1 className="px-2 text-sm">{cafe.address}</h1>
+                              </div>
+                              <div className="flex items-center mt-2 text-gray-700 ml-5 md:ml-10">
+                                <FontAwesomeIcon icon={faPhone} />
+                                <a
+                                  className="px-2 text-sm"
+                                  href={"tel:" + cafe.phone_number}
+                                >
+                                  {cafe.phone_number}
+                                </a>
+                              </div>
+                              <div className="flex mt-2 text-gray-700 items-center ml-5 md:ml-10">
+                                <FontAwesomeIcon icon={faClock} />
+                                <span className="px-2 text-sm">
+                                  {cafe.content}
+                                </span>
+                              </div>
+                              <div className="flex items-center mt-2 text-gray-700 ml-5 md:ml-10">
+                                <FontAwesomeIcon icon={faQuestionCircle} />
+                                <span className="px-2 text-sm">
+                                  {cafe.name}
+                                </span>
+                              </div>
+                              <div className="flex items-center my-3 text-gray-700 ml-5 md:ml-10">
+                                {[
+                                  cafe.no_straw,
+                                  cafe.no_plasticCup,
+                                  cafe.use_biodegradable,
+                                  cafe.vegan,
+                                  cafe.discount_pruncup,
+                                  cafe.allow_pat,
+                                  cafe.food,
+                                  cafe.desert,
+                                  cafe.pruncup_rental,
+                                ].map((icon_data, index) =>
+                                  icon_data ? (
+                                    <img
+                                      className="w-8 mr-2 "
+                                      src={
+                                        require(`./assets/img/icon/icon-0${
+                                          index + 2
+                                        }.png`).default
+                                      }
+                                      key={`icon-0"${index + 2}`}
+                                      alt="icon"
+                                    />
+                                  ) : null
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                      <a href={cafe.kakaomap_url}>
-                        <FontAwesomeIcon
-                          className=" text-5xl text-blue-500 mr-10 mt-6"
-                          icon={faDirections}
-                        />
-                      </a>
-                    </div>
-                    <div className="flex items-center -mt-4 text-gray-700 ml-5 md:ml-10">
-                      <FontAwesomeIcon icon={faMap} />
-                      <h1 className="px-2 text-sm">{cafe.address}</h1>
-                    </div>
-                    <div className="flex items-center mt-2 text-gray-700 ml-5 md:ml-10">
-                      <FontAwesomeIcon icon={faPhone} />
-                      <a
-                        className="px-2 text-sm"
-                        href={"tel:" + cafe.phone_number}
-                      >
-                        {cafe.phone_number}
-                      </a>
-                    </div>
-                    <div className="flex mt-2 text-gray-700 items-center ml-5 md:ml-10">
-                      <FontAwesomeIcon icon={faClock} />
-                      <a className="px-2 text-sm">{cafe.content}</a>
-                    </div>
-
-                    <div className="flex items-center mt-2 text-gray-700 ml-5 md:ml-10">
-                      <FontAwesomeIcon icon={faQuestionCircle} />
-                      <a className="px-2 text-sm">{cafe.name}</a>
-                    </div>
-
-                    <div className="flex items-center my-3 text-gray-700 ml-5 md:ml-10">
-                      {[
-                        cafe.no_straw,
-                        cafe.no_plasticCup,
-                        cafe.use_biodegradable,
-                        cafe.vegan,
-                        cafe.discount_pruncup,
-                        cafe.allow_pat,
-                        cafe.food,
-                        cafe.desert,
-                        cafe.pruncup_rental,
-                      ].map((icon_data, index) =>
-                        icon_data ? (
-                          <img
-                            className="w-8 mr-2 "
-                            src={
-                              require(`./assets/img/icon/icon-0${
-                                index + 2
-                              }.png`).default
-                            }
-                            key={`icon-0"${index + 2}`}
-                          />
-                        ) : null
-                      )}
                     </div>
                   </div>
                 ))}
@@ -524,7 +551,7 @@ function SampleNextArrow(props) {
   return (
     <FontAwesomeIcon
       icon={faAngleRight}
-      className="text-3xl md:text-4xl opacity-50 absolute top-52 right-3"
+      className="text-3xl md:text-4xl opacity-50 absolute top-52 right-3 z-50"
       onClick={onClick}
     />
   );
@@ -535,7 +562,7 @@ function SamplePrevArrow(props) {
   return (
     <FontAwesomeIcon
       icon={faAngleLeft}
-      className="text-3xl md:text-4xl opacity-50 absolute top-52 left-3"
+      className="text-3xl md:text-4xl opacity-50 absolute top-52 left-3 z-50"
       onClick={onClick}
     />
   );
