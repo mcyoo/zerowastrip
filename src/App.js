@@ -183,7 +183,8 @@ class App extends Component {
       "발트글라스",
       "카페제주동네",
       "카페 이스틀리",
-      "하양한"
+      "하양한",
+      "펜고호다"
     ];
     var array_eco_place = [
       "핸드메이드라이프",
