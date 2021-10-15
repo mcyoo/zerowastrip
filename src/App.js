@@ -184,7 +184,8 @@ class App extends Component {
       "카페제주동네",
       "카페 이스틀리",
       "하양한",
-      "펜고호다"
+      "펜고호다",
+      "우영팟민박"
     ];
     var array_eco_place = [
       "핸드메이드라이프",
