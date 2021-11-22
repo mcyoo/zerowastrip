@@ -196,7 +196,8 @@ class App extends Component {
       "뿌리와 열매",
       "세븐일레븐 제주종달리점",
       "사랑각게스트하우스",
-      "도바나"
+      "도바나",
+      "AND유CAFE"
     ];
     var array_eco_place = [
       "핸드메이드라이프",
