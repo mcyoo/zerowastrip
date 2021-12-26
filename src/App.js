@@ -26,7 +26,6 @@ import { faInstagram } from "@fortawesome/free-brands-svg-icons";
 /*global kakao*/
 const map_level = 5;
 const panTo_latlngX = 0.009;
-let update_defence = true;
 class App extends Component {
   constructor(props) {
     super(props);
@@ -197,7 +196,12 @@ class App extends Component {
       "세븐일레븐 제주종달리점",
       "사랑각게스트하우스",
       "도바나",
-      "AND유CAFE"
+      "AND유CAFE",
+      "어떤바람",
+      "사분의이",
+      "부워크",
+      "하도야비어 하도야베드 민박",
+      "코코메아"
     ];
     var array_eco_place = [
       "핸드메이드라이프",
@@ -256,12 +260,7 @@ class App extends Component {
   }
 
   componentDidUpdate() {
-    if (update_defence === true) {
-      if (this.state.loading === false) {
         this.setCafe();
-        update_defence = false;
-      }
-    }
   }
 
   render() {
