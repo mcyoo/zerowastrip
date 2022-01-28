@@ -201,7 +201,8 @@ class App extends Component {
       "사분의이",
       "부워크",
       "하도야비어 하도야베드 민박",
-      "코코메아"
+      "코코메아",
+      "스팅그레이",
     ];
     var array_eco_place = [
       "핸드메이드라이프",
@@ -260,7 +261,7 @@ class App extends Component {
   }
 
   componentDidUpdate() {
-        this.setCafe();
+    this.setCafe();
   }
 
   render() {
