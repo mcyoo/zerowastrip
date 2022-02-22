@@ -203,6 +203,8 @@ class App extends Component {
       "하도야비어 하도야베드 민박",
       "코코메아",
       "스팅그레이",
+      "카페 공드리",
+      "하와 (숙소)",
     ];
     var array_eco_place = [
       "핸드메이드라이프",
