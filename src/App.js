@@ -205,6 +205,7 @@ class App extends Component {
       "스팅그레이",
       "카페 공드리",
       "하와 (숙소)",
+      "돌랑돌랑상점",
     ];
     var array_eco_place = [
       "핸드메이드라이프",
